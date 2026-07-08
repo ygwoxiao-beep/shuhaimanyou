@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>数海漫游 - SCORM 2004</title>
+  <style>
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    :root { --sea:#00a6c8; --deep:#073b4c; --sand:#fff4cf; --sun:#ff9f1c; --pink:#ff4f8b; --mint:#74d99f; --ink:#17324d; --panel:rgba(255,255,255,.88); --glass:rgba(255,255,255,.22); --line:rgba(7,59,76,.16); --shadow:0 24px 80px rgba(3,42,56,.22); --radius:28px; }
+    html, body { margin:0; min-height:100%; font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif; color:var(--ink); background: radial-gradient(circle at 20% 12%, rgba(255,255,255,.8), transparent 18%), linear-gradient(180deg,#8ee6ef 0%, #dffbff 42%, #fff5d6 100%); overflow-x:hidden; }
+    body::before { content:""; position:fixed; inset:0; pointer-events:none; background-image: radial-gradient(circle at 10% 20%, rgba(255,255,255,.5) 0 3px, transparent 4px), radial-gradient(circle at 76% 34%, rgba(255,255,255,.42) 0 2px, transparent 3px), radial-gradient(circle at 48% 70%, rgba(255,255,255,.38) 0 3px, transparent 4px); background-size:160px 180px; animation:bubbles 18s linear infinite; }
+    @keyframes bubbles { from { transform:translateY(0); } to { transform:translateY(-180px); } }
+    button, input { font:inherit; } button { cursor:pointer; border:0; touch-action:manipulation; user-select:none; -webkit-user-select:none; } input { min-height:52px; } img, video { max-width:100%; display:block; }
+    .shell { position:relative; z-index:1; min-height:100vh; padding:24px; }
+    .topbar { max-width:1220px; margin:0 auto 18px; display:flex; justify-content:space-between; align-items:center; gap:18px; }
+    .brand small { display:block; color:#0f7890; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
+    .brand h1 { margin:3px 0 0; font-size:clamp(30px,4vw,54px); color:#07556b; text-shadow:0 3px 0 rgba(255,255,255,.6); }
+    .metrics { display:grid; grid-template-columns:repeat(3,minmax(96px,1fr)); gap:12px; }
+    .metric { background:rgba(255,255,255,.72); border:1px solid var(--line); border-radius:20px; padding:12px 16px; text-align:center; box-shadow:0 10px 30px rgba(3,42,56,.12); backdrop-filter:blur(14px); }
+    .metric span { display:block; color:#27768c; font-size:12px; } .metric strong { display:block; font-size:24px; color:var(--deep); }
+    #app { max-width:1220px; margin:0 auto; }
+    .panel { background:var(--panel); border:1px solid rgba(255,255,255,.72); border-radius:var(--radius); box-shadow:var(--shadow); backdrop-filter:blur(18px); }
+    .cover { min-height:calc(100vh - 150px); display:grid; grid-template-columns:1.05fr .95fr; gap:22px; align-items:stretch; }
+    .hero { padding:48px; position:relative; overflow:hidden; }
+    .hero::after { content:""; position:absolute; width:280px; height:280px; right:-80px; bottom:-80px; border-radius:50%; background:radial-gradient(circle,#ffd166,transparent 65%); opacity:.45; }
+    .eyebrow { margin:0 0 10px; color:#087b95; font-size:13px; font-weight:900; letter-spacing:.12em; text-transform:uppercase; }
+    .hero h2, .stage-title { margin:0; color:#073b4c; line-height:1.05; font-size:clamp(38px,6vw,82px); }
+    .hero p { max-width:650px; font-size:20px; line-height:1.8; color:#24536a; }
+    .ocean-card { padding:26px; display:grid; place-items:center; position:relative; overflow:hidden; background:linear-gradient(160deg,rgba(255,255,255,.82),rgba(116,217,159,.36)); }
+    .submarine { width:min(430px,80%); aspect-ratio:1.4; border-radius:44% 56% 48% 52%; background:linear-gradient(135deg,#ffd166,#ff9f1c); box-shadow:inset 0 -22px 0 rgba(181,83,0,.18), 0 20px 60px rgba(255,159,28,.28); position:relative; animation:float 4s ease-in-out infinite; }
+    .submarine::before { content:""; position:absolute; width:88px; height:88px; left:24%; top:28%; border-radius:50%; background:#b8f7ff; border:12px solid #fff4cf; box-shadow:inset 0 0 0 8px rgba(0,166,200,.18); }
+    .submarine::after { content:"123"; position:absolute; right:18%; top:36%; color:#073b4c; font-size:40px; font-weight:1000; transform:rotate(-8deg); }
+    @keyframes float { 50% { transform:translateY(-16px) rotate(1deg); } }
+    .actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:10px; }
+    .btn { min-height:48px; padding:12px 22px; border-radius:999px; font-weight:900; color:#073b4c; background:#fff; box-shadow:0 10px 24px rgba(7,59,76,.16); }
+    .btn.primary { color:#fff; background:linear-gradient(135deg,var(--pink),var(--sun)); } .btn.secondary { background:linear-gradient(135deg,#fff,#dffbff); } .btn.ghost { background:rgba(255,255,255,.44); border:1px solid var(--line); }
+    .stage { display:grid; grid-template-columns:152px 1fr; gap:12px; align-items:start; }
+    .side { padding:8px; display:grid; gap:5px; overflow-y:auto; max-height:calc(100vh - 160px); }
+    .chip { padding:7px 9px; border-radius:10px; background:rgba(255,255,255,.58); border:1px solid var(--line); font-size:11px; font-weight:700; color:#345b70; line-height:1.4; cursor:pointer; transition:.15s ease; word-break:keep-all; overflow-wrap:anywhere; }
+    .chip:hover { background:rgba(255,255,255,.92); transform:translateX(2px); }
+    .chip.active { background:#fff4cf; outline:2px solid rgba(255,159,28,.28); color:#073b4c; }
+    .chip.done { color:#27ae60; background:rgba(234,255,242,.72); }
+    .main { padding:10px 14px 14px; display:grid; gap:6px; }
+    .stage-head { display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:0; } .stage-title { font-size:clamp(18px,2.5vw,26px); margin:0; } .eyebrow { font-size:11px; margin:0 0 2px; }
+    .body { display:grid; gap:6px; } .lead { margin:0; color:#345b70; font-size:18px; line-height:1.7; }
+    .source-frame { border-radius:22px; overflow:hidden; border:3px solid rgba(255,255,255,.9); box-shadow:0 18px 50px rgba(7,59,76,.16); background:#fff; }
+    .source-frame.hero-img { width:100%; margin-bottom:2px; }
+    .source-frame.hero-img img { width:100%; max-height:72vh; object-fit:contain; }
+    .source-frame img { width:100%; }
+    .split { display:grid; grid-template-columns:1fr 1fr; gap:18px; align-items:start; }
+    .option-grid, .tokens, .target-grid, .round-grid, .digit-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(72px,1fr)); gap:8px; }
+    .digit-grid { grid-template-columns:repeat(5,minmax(52px,1fr)); }
+    .option, .token, .target, .round-card, .cell, .sign-row, .badge { border-radius:14px; border:1px solid var(--line); background:rgba(255,255,255,.72); box-shadow:0 8px 18px rgba(7,59,76,.1); }
+    .feedback { padding:8px 12px; color:#24536a; font-weight:800; }
+    .option, .token { min-height:44px; padding:6px 10px; font-size:20px; font-weight:900; color:#073b4c; transition:.18s ease; touch-action:none; }
+    .option:hover, .token:hover { transform:translateY(-3px) scale(1.02); } .option.correct, .target.correct, .cell.correct { outline:4px solid rgba(116,217,159,.55); background:#eafff2; } .option.wrong, .target.wrong, .cell.wrong { outline:4px solid rgba(255,79,139,.34); }
+    .token.used { opacity:.42; transform:none; } .token.selected { outline:4px solid rgba(255,159,28,.4); }
+    .token.drag-ghost { position:fixed; left:0; top:0; z-index:30; width:52px; height:52px; display:grid; place-items:center; pointer-events:none; transform:translate(-50%,-50%) scale(1.06); box-shadow:0 12px 30px rgba(7,59,76,.28); }
+    .target { min-height:130px; padding:16px; display:grid; gap:8px; touch-action:manipulation; } .target strong { font-size:18px; } .target .value { min-height:42px; display:grid; place-items:center; border-radius:14px; background:#fff4cf; font-size:24px; font-weight:1000; }
+    .target.hover { outline:4px solid rgba(0,166,200,.34); background:#eefcff; }
+    .droptarget { cursor:pointer; } .droptarget.hover { outline:4px solid rgba(0,166,200,.5); background:#d8f8ff; transform:scale(1.06); } .droptarget.correct { outline:4px solid rgba(116,217,159,.6); background:#eafff2; } .droptarget.wrong { outline:4px solid rgba(255,79,139,.4); }
+    /* feedback 样式已上移 */
+    .answer-input { width:min(360px,100%); padding:16px 18px; border-radius:18px; border:2px solid rgba(0,166,200,.28); font-size:28px; font-weight:900; color:#073b4c; background:#fff; }
+    .sign { display:grid; gap:10px; max-width:520px; } .sign-row { display:grid; grid-template-columns:80px 1fr 80px; gap:10px; padding:10px; background:#b96a20; color:#fff; } .sign-row div { min-height:50px; display:grid; place-items:center; border-radius:12px; background:#7b3d12; font-size:28px; font-weight:900; } .sign-row .blank { background:#fff4cf; color:#7b3d12; }
+    .wire-grid { display:grid; gap:8px; width:min(620px,100%); } .wire-row { display:grid; grid-auto-flow:column; grid-auto-columns:1fr; gap:8px; } .cell { min-height:74px; display:grid; place-items:center; font-size:30px; font-weight:1000; color:#ff4f8b; background:#ffd84a; } .cell.empty { background:rgba(255,216,74,.38); color:#a35b00; } .cell.active { outline:5px solid rgba(0,166,200,.45); transform:scale(1.04); }
+    video { width:100%; border-radius:22px; background:#073b4c; box-shadow:var(--shadow); }
+    .report { display:grid; grid-template-columns:320px 1fr; gap:18px; } .report-card { padding:22px; } .report-card h3 { margin:0 0 8px; } .big { font-size:58px; font-weight:1000; color:#ff4f8b; }
+    .badge-list { display:grid; gap:10px; } .badge { padding:12px; } .badge.unlocked { background:#eafff2; }
+    .rpt-wrap { display:grid; gap:16px; max-width:900px; margin:0 auto; }
+    .rpt-header { padding:28px 32px; } .rpt-subtitle { margin:6px 0 0; color:#345b70; font-size:17px; }
+    .rpt-stats { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+    .rpt-stat { padding:18px 10px; text-align:center; }
+    .rpt-num { font-size:clamp(28px,4vw,46px); font-weight:1000; color:#ff4f8b; line-height:1; }
+    .rpt-lbl { margin-top:6px; font-size:13px; color:#597386; font-weight:700; }
+    .rpt-detail { padding:20px 22px; }
+    .rpt-detail-title { margin:0 0 14px; font-size:18px; color:#073b4c; }
+    .rpt-table-wrap { overflow-x:auto; }
+    .rpt-table { width:100%; border-collapse:collapse; font-size:14px; }
+    .rpt-table th { background:#f0f9fb; color:#0d7890; font-weight:900; padding:10px 12px; text-align:left; border-bottom:2px solid #d0eff5; }
+    .rpt-table td { padding:9px 12px; border-bottom:1px solid rgba(7,59,76,.08); vertical-align:top; }
+    .rpt-table tr:last-child td { border-bottom:none; }
+    .rpt-table tr:hover td { background:rgba(0,166,200,.04); }
+    .rpt-no { width:36px; color:#888; font-weight:700; }
+    .rpt-section { width:130px; color:#0d7890; font-weight:700; font-size:13px; }
+    .rpt-stem { color:#24536a; line-height:1.5; }
+    .rpt-result { width:100px; font-weight:800; white-space:nowrap; }
+    .rpt-result.pass { color:#27ae60; } .rpt-result.fail { color:#c0392b; }
+    .retry-badge { display:inline-block; margin-left:5px; padding:1px 6px; background:#fff4cf; border-radius:8px; font-size:11px; color:#a35b00; font-weight:700; }
+    .rpt-footer { padding:18px 22px; } .rpt-submitted-tip { margin:0 0 10px; color:#27ae60; font-weight:800; font-size:15px; }
+    .hidden { display:none !important; }
+    @keyframes shake { 0%,100%{transform:translateX(0)} 15%{transform:translateX(-10px) rotate(-1deg)} 30%{transform:translateX(10px) rotate(1deg)} 45%{transform:translateX(-8px)} 60%{transform:translateX(8px)} 75%{transform:translateX(-4px)} }
+    .shake { animation:shake .45s ease; }
+    .toast { position:fixed; left:50%; bottom:28px; transform:translateX(-50%); padding:12px 18px; color:#fff; background:#073b4c; border-radius:999px; z-index:10; box-shadow:0 16px 40px rgba(0,0,0,.22); }
+    @media (max-width: 900px) { .topbar, .cover, .stage, .split, .report, .rpt-stats { grid-template-columns:1fr 1fr; } .topbar { align-items:stretch; } .metrics { width:100%; grid-template-columns:repeat(3,1fr); } .hero { padding:30px; } .shell { padding:14px; } .side { order:2; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); } .main { padding:20px; } .digit-grid { grid-template-columns:repeat(3,1fr); }  video { max-height:52vh; } }
+    @media (max-width: 560px) { .brand h1 { font-size:32px; } .brand small { font-size:11px; } .metrics { gap:8px; } .metric { padding:10px 8px; } .metric strong { font-size:20px; } .hero, .main, .report-card { padding:18px; } .hero p, .lead { font-size:16px; } .actions { display:grid; grid-template-columns:1fr; } .btn, .option, .token { width:100%; min-height:52px; } .option-grid, .tokens, .target-grid, .round-grid { grid-template-columns:1fr; } .sign-row { grid-template-columns:58px 1fr 58px; } .sign-row div { font-size:23px; } .cell { min-height:58px; font-size:24px; } .big { font-size:42px; } }
+  
+    .overlay-image-wrap { position: relative; display: block; width: 100%; max-width: 100%; margin: 0 auto 6px; }
+    .overlay-base-img { width: 100%; display: block; border-radius: 12px; }
+    .overlay-target { position: absolute; width: 9%; aspect-ratio: 1; transform: translate(-50%,-50%); background: transparent; border: none; border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.15s; min-width: 44px; min-height: 44px; }
+    .overlay-target.hover { transform: translate(-50%,-50%) scale(1.08); }
+    .oi-badge { display: flex; align-items: center; justify-content: center; width: 58%; height: 58%; min-width: 22px; min-height: 22px; background: rgba(39,174,96,0.12); border: 2.5px dashed #2ecc71; border-radius: 7px; box-shadow: 0 0 6px 1px rgba(46,204,113,0.5); font-size: clamp(11px,1.8vw,20px); font-weight: 700; color: rgba(20,110,50,0.9); pointer-events: none; transition: background 0.2s, box-shadow 0.2s, transform 0.15s; }
+    .overlay-target.hover .oi-badge { border-color: #27ae60; background: rgba(39,174,96,0.28); box-shadow: 0 0 12px 3px rgba(46,204,113,0.7); transform: scale(1.18); }
+    .overlay-target.correct .oi-badge { border: 2.5px solid #27ae60; background: rgba(39,174,96,0.32); color: #1a6b3a; box-shadow: 0 0 10px 3px rgba(39,174,96,0.5); }
+    .overlay-target.wrong .oi-badge { border: 2.5px dashed #e74c3c; background: rgba(231,76,60,0.18); color: #922b21; box-shadow: 0 0 8px 2px rgba(231,76,60,0.4); }
+    #oi-tokens { justify-content: center; margin: 8px 0; }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand"><small>SCORM 2004 · Number Sea</small><h1 id="course-title">数海漫游</h1></div>
+      <div class="metrics">
+        <div class="metric"><span>进度</span><strong id="progress">0 / 0</strong></div>
+        <div class="metric"><span>积分</span><strong id="score">0</strong></div>
+        <div class="metric"><span>连击</span><strong id="combo">0</strong></div>
+      </div>
+    </header>
+    <main id="app"></main>
+  </div>
+  <script src="scorm-api.js"></script>
+  <script>
+    const app = document.getElementById('app');
+    const progressEl = document.getElementById('progress');
+    const scoreEl = document.getElementById('score');
+    const comboEl = document.getElementById('combo');
+    const titleEl = document.getElementById('course-title');
+    const runtime = window.NumberSeaScorm('number-sea-explorer');
+    runtime.initialize();
+
+    const state = { lesson:null, questions:[], flow:[], index:0, startedAt:Date.now(), stepStartedAt:Date.now(), completed:[], answers:{}, score:0, combo:0, bestCombo:0, badges:[] };
+    let confettiState = { canvas:null, raf:0 };
+
+    boot();
+    window.addEventListener('beforeunload', () => runtime.save(buildScormPayload()));
+
+    async function boot() {
+      const [lesson, questions] = await Promise.all([fetchJson('data/lesson.json'), fetchJson('data/questions.json')]);
+      Object.assign(state, { lesson, questions, flow: lesson.flow });
+      titleEl.textContent = lesson.title;
+      hydrate();
+      render();
+    }
+    async function fetchJson(path) { const response = await fetch(path); if (!response.ok) throw new Error(`无法加载 ${path}`); return response.json(); }
+    function hydrate() {
+      const raw = runtime.hydrate().suspendData;
+      if (!raw) return;
+      try { Object.assign(state, JSON.parse(raw)); } catch (error) { console.warn('进度恢复失败', error); }
+    }
+    function activeQuestions() { return state.flow.filter((x) => x.kind === 'question' || x.kind === 'video' || x.kind === 'concept'); }
+    function sync() {
+      progressEl.textContent = `${state.completed.length} / ${activeQuestions().length}`;
+      scoreEl.textContent = state.score;
+      comboEl.textContent = state.combo;
+      state.badges = state.lesson.game.badges.filter((b) => state.score >= b.threshold).map((b) => b.id);
+      runtime.save(buildScormPayload());
+    }
+    function buildScormPayload() {
+      const total = Math.max(activeQuestions().length, 1);
+      const completed = state.completed.length >= total;
+      const passed = state.score >= state.lesson.game.passingScore;
+      return { location:String(state.index), score:String(state.score), maxScore:'150', completionStatus:completed ? 'completed' : 'incomplete', successStatus:completed ? (passed ? 'passed' : 'failed') : 'unknown', progressMeasure:String(Math.min(1, state.completed.length / total).toFixed(2)), suspendData:JSON.stringify({ index:state.index, startedAt:state.startedAt, completed:state.completed, answers:state.answers, score:state.score, combo:state.combo, bestCombo:state.bestCombo, badges:state.badges }) };
+    }
+    function render() {
+      clearConfetti();
+      sync();
+      const item = state.flow[state.index];
+      if (!item) return renderReport();
+      state.stepStartedAt = Date.now();
+      if (item.kind === 'cover') return renderCover();
+      if (item.kind === 'video') return renderVideo(item);
+      if (item.kind === 'concept') return renderQuestion(questionById(item.id));
+      if (item.kind === 'question') return renderQuestion(questionById(item.id));
+      renderReport();
+    }
+    function questionById(id) { return state.questions.find((q) => q.id === id); }
+    function next() { clearConfetti(); state.index += 1; render(); }
+    function markComplete(id, detail = {}, score = state.lesson.game.baseScore) {
+      if (!state.completed.includes(id)) {
+        const fast = Date.now() - state.stepStartedAt < 45000;
+        const delta = score + (fast ? state.lesson.game.speedBonus : 0);
+        state.score += delta;
+        state.combo += 1;
+        state.bestCombo = Math.max(state.bestCombo, state.combo);
+        state.completed.push(id);
+        state.answers[id] = { correct:true, score:delta, fast, elapsedMs:Date.now() - state.stepStartedAt, ...detail };
+      }
+      sync();
+    }
+    function markRetry(id) {
+      state.combo = 0;
+      state.answers[id] = { ...(state.answers[id] || {}), correct:false, retries:(state.answers[id]?.retries || 0) + 1 };
+      shake(); playSound('wrong'); sync();
+      const atIndex = state.index;
+      setTimeout(() => { if (state.index === atIndex) render(); }, 900);
+    }
+    function stageShell(title, body, activeSectionId) {
+      const steps = state.flow.slice(1).filter(f => f.kind !== 'report');
+      const chips = steps.map(f => {
+        const idx = state.flow.indexOf(f);
+        const done = state.completed.includes(f.id);
+        const cur = idx === state.index;
+        const icon = done ? '✓' : (f.kind === 'video' ? '▶' : '·');
+        return `<div class="chip${cur ? ' active' : ''}${done ? ' done' : ''}" data-go="${idx}" title="${f.title}">${icon} ${f.title}</div>`;
+      }).join('');
+      app.innerHTML = `<section class="stage"><aside class="side panel">${chips}</aside><section class="main panel"><div class="stage-head"><div><p class="eyebrow">第 ${Math.max(state.index,1)} 步 / ${state.flow.length - 1}</p><h2 class="stage-title">${title}</h2></div><button class="btn ghost" id="home">首页</button></div><div class="body">${body}</div></section></section>`;
+      document.getElementById('home').addEventListener('click', () => { state.index = 0; render(); });
+      document.querySelectorAll('.side [data-go]').forEach(el => el.addEventListener('click', () => { state.index = Number(el.dataset.go); render(); }));
+    }
+    function renderCover() {
+      const learner = runtime.learnerName();
+      app.innerHTML = `<section class="cover"><article class="hero panel"><p class="eyebrow">AI 重构互动课件</p><h2>${state.lesson.cover.headline}</h2><p>${state.lesson.cover.subheadline}</p><p>${learner}，这节课不是 PPT 翻页。你会看视频、点数字、拖拽数字、输入密码、完成穿线挑战，最后获得学习报告。</p><div class="actions"><button class="btn primary" id="start">${state.lesson.cover.cta}</button><button class="btn secondary" id="resume">继续进度</button></div></article><aside class="ocean-card panel"><div class="submarine" aria-hidden="true"></div><p class="lead">数字泡泡正在上浮，准备进入宝藏海域。</p></aside></section>`;
+      document.getElementById('start').addEventListener('click', () => { state.index = 1; render(); });
+      document.getElementById('resume').addEventListener('click', () => { state.index = Math.max(1, Number(state.index || 1)); render(); });
+    }
+    function renderVideo(item) {
+      const videoSrc = /^https?:\/\//.test(item.video) ? item.video : './' + item.video.replace(/^\.\//,'');
+      stageShell(item.title, `<video id="lesson-video" controls playsinline preload="none" style="width:100%;"><source src="${videoSrc}" type="video/mp4">您的浏览器不支持此视频格式。</video><p class="lead" id="video-tip">看完视频后点击"我已完成视频"继续学习。</p><div class="actions"><button class="btn primary" id="video-done">我已完成视频</button><button class="btn ghost" id="skip-video">先进入互动</button></div>`, 's1');
+      const videoEl = document.getElementById('lesson-video');
+      videoEl.addEventListener('error', () => { document.getElementById('video-tip').textContent = '视频加载失败，可直接点击"先进入互动"继续。'; });
+      videoEl.addEventListener('ended', () => toast('视频播放完成，可以继续探险。'));
+      const done = () => { markComplete(item.id, { type:'video', sourcePage:item.sourcePage }, state.lesson.game.videoScore); next(); };
+      document.getElementById('video-done').addEventListener('click', done);
+      document.getElementById('skip-video').addEventListener('click', done);
+    }
+    function renderQuestion(q) {
+      const showImg = q.sourcePage && q.type === 'mapClick';
+      const imgHtml = showImg ? `<div class="source-frame hero-img"><img src="${q.sourcePage}" alt="${q.sectionTitle}"></div>` : '';
+      const base = `<div id="interaction"></div>`;
+      stageShell(q.sectionTitle, `${imgHtml}<p class="lead" style="margin:8px 0 2px;font-size:16px;color:#345b70;">${q.stem}</p>${q.prompt ? `<p class="lead" style="margin:0 0 10px;font-size:15px;color:#597386;">${q.prompt}</p>` : ''}${base}<div class="feedback" id="feedback"></div><div class="actions"><button class="btn primary hidden" id="next-btn">继续探险</button></div>`, q.sectionId);
+      document.getElementById('next-btn').addEventListener('click', next);
+      const host = document.getElementById('interaction');
+      if (q.type === 'concept') renderConcept(host, q);
+      if (q.type === 'mapClick') renderMapClick(host, q);
+      if (q.type === 'dragSlots') renderDragSlots(host, q);
+      if (q.type === 'signInput') renderSignInput(host, q);
+      if (q.type === 'wirePath') renderWirePath(host, q);
+      if (q.type === 'gridFill') renderGridFill(host, q);
+      if (q.type === 'imageOverlayDrag') renderImageOverlayDrag(host, q);
+      if (q.type === 'multiChallenge') renderMultiChallenge(host, q);
+    }
+    function finishQuestion(q, detail) {
+      document.getElementById('feedback').textContent = `${q.success} ${q.explanation || ''}`;
+      confetti(); playSound('correct');
+      markComplete(q.id, detail);
+      const nb = document.getElementById('next-btn');
+      const row = document.querySelector('#interaction .actions');
+      if (row) { row.appendChild(nb); }
+      const isLast = !state.flow.slice(state.index + 1).some(item => item.kind === 'question' || item.kind === 'concept');
+      if (isLast) {
+        runtime.save(buildScormPayload());
+        runtime.finish();
+        nb.textContent = '查看学习报告 →';
+        nb.classList.remove('hidden');
+        setTimeout(() => { clearConfetti(); renderReport(); }, 900);
+      } else {
+        nb.textContent = '继续探险';
+        nb.classList.remove('hidden');
+        const atIndex = state.index;
+        setTimeout(() => { if (state.index === atIndex) next(); }, 850);
+      }
+    }
+    function renderConcept(host, q) {
+      host.innerHTML = `<div class="digit-grid">${q.digits.map((d) => `<button class="option" data-digit="${d}">${d}</button>`).join('')}</div>`;
+      const seen = new Set();
+      host.querySelectorAll('[data-digit]').forEach((btn) => btn.addEventListener('click', () => { btn.classList.add('correct'); seen.add(btn.dataset.digit); if (seen.size === q.digits.length) finishQuestion(q, { digits:[...seen] }); }));
+    }
+    function renderMapClick(host, q) {
+      host.innerHTML = `<div class="option-grid">${q.options.map((o) => `<button class="option" data-answer="${o}">${o}</button>`).join('')}</div>`;
+      host.querySelectorAll('[data-answer]').forEach((btn) => btn.addEventListener('click', () => { host.querySelectorAll('.option').forEach((x) => x.classList.remove('correct','wrong')); if (btn.dataset.answer === q.answer) { btn.classList.add('correct'); finishQuestion(q, { answer:q.answer, count:q.count }); } else { btn.classList.add('wrong'); document.getElementById('feedback').textContent = q.failure; markRetry(q.id); } }));
+    }
+    function renderDragSlots(host, q) { renderGenericDrag(host, q.tokens, q.targets, (placements) => q.targets.every((t) => placements[t.id] === t.answer), () => finishQuestion(q, { placements:true }), () => { document.getElementById('feedback').textContent = q.failure; markRetry(q.id); }); }
+    function renderImageOverlayDrag(host, q) {
+      host.innerHTML = `<div class="overlay-image-wrap" id="oi-wrap"><img src="${q.sourcePage}" alt="${q.sectionTitle}" class="overlay-base-img">${q.overlayTargets.map((t) => `<div class="overlay-target" data-tgt="${t.id}" data-ans="${t.answer}" style="left:${t.left}%;top:${t.top}%"><span class="oi-badge">?</span></div>`).join('')}</div><div class="tokens" id="oi-tokens">${q.tokens.map((t, i) => `<button class="token" draggable="true" data-token="${t}" data-tid="oi${i}">${t}</button>`).join('')}</div><div class="actions"><button class="btn secondary" id="check-oi">检查答案</button><button class="btn ghost" id="reset-oi">重来</button></div>`;
+      const placements = {}; let selected = null; let pointerDrag = null;
+      const tokenEls = [...host.querySelectorAll('.token')];
+      const targetEls = [...host.querySelectorAll('.overlay-target')];
+      function place(tid, target) {
+        const token = tokenEls.find((x) => x.dataset.tid === tid);
+        if (!token || token.classList.contains('used')) return;
+        if (placements[target.dataset.tgt]) { const ot = tokenEls.find((x) => x.dataset.tid === placements[target.dataset.tgt]); if (ot) ot.classList.remove('used'); }
+        const prev = Object.entries(placements).find(([k, v]) => v === tid);
+        if (prev) { const oc = targetEls.find((x) => x.dataset.tgt === prev[0]); if (oc) { oc.querySelector('.oi-badge').textContent = '?'; oc.classList.remove('correct','wrong'); } delete placements[prev[0]]; }
+        placements[target.dataset.tgt] = tid; target.querySelector('.oi-badge').textContent = token.dataset.token; target.classList.remove('wrong');
+        token.classList.add('used'); selected = null; tokenEls.forEach((x) => x.classList.remove('selected')); targetEls.forEach((x) => x.classList.remove('hover'));
+      }
+      tokenEls.forEach((token) => {
+        token.addEventListener('click', () => { if (token.classList.contains('used')) return; selected = token.dataset.tid; tokenEls.forEach((x) => x.classList.toggle('selected', x === token)); });
+        token.addEventListener('dragstart', (e) => e.dataTransfer.setData('text/plain', token.dataset.tid));
+        token.addEventListener('pointerdown', (e) => {
+          if (token.classList.contains('used') || e.pointerType === 'mouse') return;
+          e.preventDefault(); token.setPointerCapture?.(e.pointerId);
+          selected = token.dataset.tid; tokenEls.forEach((x) => x.classList.toggle('selected', x === token));
+          const ghost = token.cloneNode(true); ghost.className = 'token drag-ghost'; ghost.textContent = token.dataset.token; document.body.appendChild(ghost);
+          pointerDrag = { tid: token.dataset.tid, ghost, pid: e.pointerId }; ghost.style.left = e.clientX + 'px'; ghost.style.top = e.clientY + 'px';
+        });
+      });
+      targetEls.forEach((target) => {
+        target.addEventListener('dragover', (e) => e.preventDefault());
+        target.addEventListener('drop', (e) => { e.preventDefault(); place(e.dataTransfer.getData('text/plain'), target); });
+        target.addEventListener('click', () => { if (selected) { place(selected, target); } else if (placements[target.dataset.tgt]) { const tid = placements[target.dataset.tgt]; const tk = tokenEls.find((x) => x.dataset.tid === tid); if (tk) tk.classList.remove('used'); delete placements[target.dataset.tgt]; target.querySelector('.oi-badge').textContent = '?'; target.classList.remove('correct','wrong'); } });
+      });
+      host.addEventListener('pointermove', (e) => { if (!pointerDrag || pointerDrag.pid !== e.pointerId) return; e.preventDefault(); pointerDrag.ghost.style.left = e.clientX + 'px'; pointerDrag.ghost.style.top = e.clientY + 'px'; targetEls.forEach((x) => x.classList.remove('hover')); const hit = document.elementFromPoint(e.clientX, e.clientY)?.closest('.overlay-target'); if (hit) hit.classList.add('hover'); });
+      host.addEventListener('pointerup', (e) => { if (!pointerDrag || pointerDrag.pid !== e.pointerId) return; const hit = document.elementFromPoint(e.clientX, e.clientY)?.closest('.overlay-target'); if (hit) place(pointerDrag.tid, hit); pointerDrag.ghost.remove(); pointerDrag = null; targetEls.forEach((x) => x.classList.remove('hover')); });
+      host.addEventListener('pointercancel', (e) => { if (pointerDrag) { pointerDrag.ghost.remove(); pointerDrag = null; } });
+      document.getElementById('reset-oi').addEventListener('click', () => { Object.keys(placements).forEach((k) => delete placements[k]); tokenEls.forEach((x) => x.classList.remove('used','selected')); targetEls.forEach((x) => { x.querySelector('.oi-badge').textContent = '?'; x.classList.remove('correct','wrong','hover'); }); selected = null; if (pointerDrag) { pointerDrag.ghost.remove(); pointerDrag = null; } });
+      document.getElementById('check-oi').addEventListener('click', () => { const allFilled = q.overlayTargets.every((t) => placements[t.id]); if (!allFilled) { document.getElementById('feedback').textContent = '还有空格没填，继续拖一拖。'; return; } const allCorrect = q.overlayTargets.every((t) => { const tk = tokenEls.find((x) => x.dataset.tid === placements[t.id]); return tk?.dataset.token === t.answer; }); targetEls.forEach((tgt) => { const tk = tokenEls.find((x) => x.dataset.tid === placements[tgt.dataset.tgt]); const ok = tk?.dataset.token === tgt.dataset.ans; tgt.classList.toggle('correct', ok); tgt.classList.toggle('wrong', !ok); }); if (allCorrect) finishQuestion(q, { filled: true }); else { document.getElementById('feedback').textContent = q.failure; markRetry(q.id); } });
+    }
+    function renderGenericDrag(host, tokens, targets, isCorrect, onCorrect, onWrong) {
+      host.innerHTML = `<div class="tokens">${tokens.map((t, i) => `<button class="token" draggable="true" data-token="${t}" data-token-id="t${i}">${t}</button>`).join('')}</div><div class="target-grid">${targets.map((t) => `<div class="target" data-target="${t.id}"><strong>${t.title || t.id}</strong><span>${t.label || ''}</span><small>${t.hint || ''}</small><div class="value">放这里</div></div>`).join('')}</div><div class="actions"><button class="btn secondary" id="check-drag">检查答案</button><button class="btn ghost" id="reset-drag">重来</button></div>`;
+      const placements = {}; let selected = null; let pointerDrag = null;
+      const tokenEls = [...host.querySelectorAll('.token')]; const targetEls = [...host.querySelectorAll('.target')];
+      tokenEls.forEach((token) => {
+        token.addEventListener('dragstart', (e) => e.dataTransfer.setData('text/plain', token.dataset.tokenId));
+        token.addEventListener('click', () => { selected = token.dataset.tokenId; tokenEls.forEach((x) => x.classList.toggle('selected', x === token)); });
+        token.addEventListener('pointerdown', (event) => startPointerDrag(event, token));
+      });
+      targetEls.forEach((target) => { target.addEventListener('dragover', (e) => e.preventDefault()); target.addEventListener('drop', (e) => { e.preventDefault(); place(e.dataTransfer.getData('text/plain'), target); }); target.addEventListener('click', () => { if (selected) place(selected, target); }); });
+      function place(tokenId, target) { const token = tokenEls.find((x) => x.dataset.tokenId === tokenId); if (!token || token.classList.contains('used')) return; placements[target.dataset.target] = token.dataset.token; target.querySelector('.value').textContent = token.dataset.token; target.classList.add('correct'); token.classList.add('used'); selected = null; tokenEls.forEach((x) => x.classList.remove('selected')); }
+      function startPointerDrag(event, token) {
+        if (token.classList.contains('used') || event.pointerType === 'mouse') return;
+        event.preventDefault();
+        token.setPointerCapture?.(event.pointerId);
+        selected = token.dataset.tokenId;
+        tokenEls.forEach((x) => x.classList.toggle('selected', x === token));
+        const ghost = token.cloneNode(true);
+        ghost.className = 'token drag-ghost';
+        ghost.removeAttribute('id');
+        ghost.textContent = token.dataset.token;
+        document.body.appendChild(ghost);
+        pointerDrag = { tokenId: token.dataset.tokenId, ghost, pointerId: event.pointerId };
+        movePointerGhost(event.clientX, event.clientY);
+      }
+      function movePointerGhost(x, y) {
+        if (!pointerDrag) return;
+        pointerDrag.ghost.style.left = `${x}px`;
+        pointerDrag.ghost.style.top = `${y}px`;
+        targetEls.forEach((target) => target.classList.remove('hover'));
+        const target = document.elementFromPoint(x, y)?.closest('.target');
+        if (target && host.contains(target)) target.classList.add('hover');
+      }
+      function stopPointerDrag(event) {
+        if (!pointerDrag || pointerDrag.pointerId !== event.pointerId) return;
+        const target = document.elementFromPoint(event.clientX, event.clientY)?.closest('.target');
+        if (target && host.contains(target)) place(pointerDrag.tokenId, target);
+        pointerDrag.ghost.remove();
+        pointerDrag = null;
+        targetEls.forEach((node) => node.classList.remove('hover'));
+      }
+      host.addEventListener('pointermove', (event) => { if (pointerDrag) { event.preventDefault(); movePointerGhost(event.clientX, event.clientY); } });
+      host.addEventListener('pointerup', stopPointerDrag);
+      host.addEventListener('pointercancel', stopPointerDrag);
+      document.getElementById('reset-drag').addEventListener('click', () => { Object.keys(placements).forEach((k) => delete placements[k]); if (pointerDrag) { pointerDrag.ghost.remove(); pointerDrag = null; } tokenEls.forEach((x) => x.classList.remove('used','selected')); targetEls.forEach((x) => { x.classList.remove('correct','wrong','hover'); x.querySelector('.value').textContent = '放这里'; }); });
+      document.getElementById('check-drag').addEventListener('click', () => { if (isCorrect(placements)) onCorrect(); else { targetEls.forEach((x) => x.classList.add('wrong')); onWrong(); } });
+    }
+    function renderSignInput(host, q) {
+      host.innerHTML = `<div class="sign">${q.rows.map((r) => `<div class="sign-row"><div>${r[0]}</div><div class="${r[1] ? '' : 'blank'}">${r[1] || '?'}</div><div>${r[2]}</div></div>`).join('')}</div><input class="answer-input" id="answer" inputmode="numeric" placeholder="输入答案"><div class="actions"><button class="btn secondary" id="check">提交</button></div>`;
+      document.getElementById('check').addEventListener('click', () => { const value = document.getElementById('answer').value.trim(); if (value === q.answer) finishQuestion(q, { answer:value }); else { document.getElementById('feedback').textContent = q.failure; markRetry(q.id); } });
+    }
+    function renderWirePath(host, q) {
+      let step = 0;
+      host.innerHTML = `<div class="wire-grid">${q.grid.map((row) => `<div class="wire-row">${row.map((v) => `<button class="cell ${v ? '' : 'empty'}" ${v ? `data-num="${v}"` : 'disabled'}>${v || ''}</button>`).join('')}</div>`).join('')}</div>`;
+      host.querySelectorAll('[data-num]').forEach((cell) => cell.addEventListener('click', () => { if (cell.dataset.num === q.sequence[step]) { cell.classList.add('active'); step += 1; document.getElementById('feedback').textContent = `已连到 ${cell.dataset.num}，继续找下一个。`; if (step === q.sequence.length) finishQuestion(q, { sequence:q.sequence.join('-') }); } else { document.getElementById('feedback').textContent = `${q.failure} 下一个应该找 ${q.sequence[step]}。`; markRetry(q.id); } }));
+    }
+    function renderGridFill(host, q) {
+      const targetsByPos = Object.fromEntries(q.targets.map((t) => [`${t.row}-${t.col}`, t]));
+      host.innerHTML = `<div class="tokens" id="token-bank">${q.tokens.map((t, i) => `<button class="token" draggable="true" data-token="${t}" data-tid="t${i}">${t}</button>`).join('')}</div><div class="wire-grid">${q.grid.map((row, ri) => `<div class="wire-row">${row.map((v, ci) => { const tgt = targetsByPos[`${ri}-${ci}`]; return tgt ? `<div class="cell empty droptarget" data-tgt="${tgt.id}" data-ans="${tgt.answer}">?</div>` : `<div class="cell ${v ? '' : 'empty'}">${v || ''}</div>`; }).join('')}</div>`).join('')}</div><div class="actions"><button class="btn secondary" id="check-grid">检查答案</button><button class="btn ghost" id="reset-grid">重来</button></div>`;
+      const placements = {};
+      let selected = null;
+      let pointerDrag = null;
+      const tokenEls = [...host.querySelectorAll('.token')];
+      const cellEls  = [...host.querySelectorAll('.droptarget')];
+      function place(tid, cell) {
+        const token = tokenEls.find((x) => x.dataset.tid === tid);
+        if (!token || token.classList.contains('used')) return;
+        const prev = Object.entries(placements).find(([k,v]) => v === tid);
+        if (prev) { const oldCell = cellEls.find((x) => x.dataset.tgt === prev[0]); if (oldCell) { oldCell.textContent = '?'; oldCell.classList.remove('correct','wrong'); delete placements[prev[0]]; } }
+        placements[cell.dataset.tgt] = tid;
+        cell.textContent = token.dataset.token;
+        token.classList.add('used');
+        selected = null;
+        tokenEls.forEach((x) => x.classList.remove('selected'));
+        cellEls.forEach((x) => x.classList.remove('hover'));
+      }
+      tokenEls.forEach((token) => {
+        token.addEventListener('click', () => { selected = token.dataset.tid; tokenEls.forEach((x) => x.classList.toggle('selected', x === token)); });
+        token.addEventListener('dragstart', (e) => e.dataTransfer.setData('text/plain', token.dataset.tid));
+        token.addEventListener('pointerdown', (e) => {
+          if (token.classList.contains('used') || e.pointerType === 'mouse') return;
+          e.preventDefault(); token.setPointerCapture?.(e.pointerId);
+          selected = token.dataset.tid; tokenEls.forEach((x) => x.classList.toggle('selected', x === token));
+          const ghost = token.cloneNode(true); ghost.className = 'token drag-ghost'; ghost.removeAttribute('id'); ghost.textContent = token.dataset.token; document.body.appendChild(ghost);
+          pointerDrag = { tid: token.dataset.tid, ghost, pid: e.pointerId };
+          ghost.style.left = e.clientX + 'px'; ghost.style.top = e.clientY + 'px';
+        });
+      });
+      cellEls.forEach((cell) => {
+        cell.addEventListener('dragover', (e) => e.preventDefault());
+        cell.addEventListener('drop', (e) => { e.preventDefault(); place(e.dataTransfer.getData('text/plain'), cell); });
+        cell.addEventListener('click', () => { if (selected) place(selected, cell); else if (placements[cell.dataset.tgt]) { const tid = placements[cell.dataset.tgt]; const token = tokenEls.find((x) => x.dataset.tid === tid); if (token) token.classList.remove('used'); delete placements[cell.dataset.tgt]; cell.textContent = '?'; cell.classList.remove('correct','wrong'); } });
+      });
+      host.addEventListener('pointermove', (e) => { if (!pointerDrag || pointerDrag.pid !== e.pointerId) return; e.preventDefault(); pointerDrag.ghost.style.left = e.clientX + 'px'; pointerDrag.ghost.style.top = e.clientY + 'px'; cellEls.forEach((x) => x.classList.remove('hover')); const hit = document.elementFromPoint(e.clientX, e.clientY)?.closest('.droptarget'); if (hit) hit.classList.add('hover'); });
+      host.addEventListener('pointerup', (e) => { if (!pointerDrag || pointerDrag.pid !== e.pointerId) return; const hit = document.elementFromPoint(e.clientX, e.clientY)?.closest('.droptarget'); if (hit) place(pointerDrag.tid, hit); pointerDrag.ghost.remove(); pointerDrag = null; cellEls.forEach((x) => x.classList.remove('hover')); });
+      host.addEventListener('pointercancel', (e) => { if (pointerDrag) { pointerDrag.ghost.remove(); pointerDrag = null; } });
+      document.getElementById('reset-grid').addEventListener('click', () => { Object.keys(placements).forEach((k) => delete placements[k]); tokenEls.forEach((x) => x.classList.remove('used','selected')); cellEls.forEach((x) => { x.textContent = '?'; x.classList.remove('correct','wrong','hover'); }); selected = null; if (pointerDrag) { pointerDrag.ghost.remove(); pointerDrag = null; } });
+      document.getElementById('check-grid').addEventListener('click', () => { const allFilled = q.targets.every((t) => placements[t.id]); if (!allFilled) { document.getElementById('feedback').textContent = '还有空格没填，继续拖一拖。'; return; } const allCorrect = q.targets.every((t) => { const tid = placements[t.id]; const token = tokenEls.find((x) => x.dataset.tid === tid); return token?.dataset.token === t.answer; }); cellEls.forEach((cell) => { const tid = placements[cell.dataset.tgt]; const token = tokenEls.find((x) => x.dataset.tid === tid); cell.classList.toggle('correct', token?.dataset.token === cell.dataset.ans); cell.classList.toggle('wrong', token?.dataset.token !== cell.dataset.ans); }); if (allCorrect) finishQuestion(q, { filled:true }); else { document.getElementById('feedback').textContent = q.failure; markRetry(q.id); } });
+    }
+    function renderMultiChallenge(host, q) {
+      let passed = 0;
+      host.innerHTML = `<div class="round-grid">${q.rounds.map((r, i) => `<div class="round-card" data-round="${i}"><h3>${r.title}</h3><div class="source-frame"><img src="${r.sourcePage}" alt="${r.title}"></div><p>${r.question}</p>${r.type === 'mapClick' ? `<div class="option-grid">${r.options.map((o) => `<button class="option" data-round-answer="${o}">${o}</button>`).join('')}</div>` : `<input class="answer-input" inputmode="numeric" placeholder="答案"><button class="btn secondary">提交</button>`}<p class="lead result"></p></div>`).join('')}</div>`;
+      host.querySelectorAll('.round-card').forEach((card) => {
+        const round = q.rounds[Number(card.dataset.round)];
+        if (round.type === 'mapClick') card.querySelectorAll('[data-round-answer]').forEach((btn) => btn.addEventListener('click', () => checkRound(card, round, btn.dataset.roundAnswer)));
+        else card.querySelector('button').addEventListener('click', () => checkRound(card, round, card.querySelector('input').value.trim()));
+      });
+      function checkRound(card, round, value) { if (card.dataset.done) return; if (value === round.answer) { card.dataset.done = '1'; passed += 1; card.classList.add('correct'); card.querySelector('.result').textContent = round.explanation; if (passed === q.rounds.length) finishQuestion(q, { rounds:passed }); } else { card.classList.add('wrong'); card.querySelector('.result').textContent = q.failure; markRetry(q.id); } }
+    }
+    function renderReport() {
+      sync();
+      const qs = activeQuestions().map(item => questionById(item.id) || item);
+      const total = qs.length;
+      const correctCount = qs.filter(q => state.answers[q.id]?.correct).length;
+      const accuracy = total > 0 ? Math.round(correctCount / total * 100) : 0;
+      const elapsedSec = Math.round((Date.now() - state.startedAt) / 1000);
+      const mins = Math.floor(elapsedSec / 60);
+      const secs = elapsedSec % 60;
+      const timeStr = mins > 0 ? `${mins}分${secs}秒` : `${secs}秒`;
+      const passed = accuracy >= 60;
+      const resultLabel = passed ? '🎉 通关成功！' : '💪 继续加油！';
+      const statsHtml = `
+        <div class="rpt-stats">
+          <div class="rpt-stat panel"><div class="rpt-num">${total}</div><div class="rpt-lbl">总题数</div></div>
+          <div class="rpt-stat panel"><div class="rpt-num" style="color:${accuracy>=80?'#27ae60':accuracy>=60?'#f39c12':'#e74c3c'}">${accuracy}%</div><div class="rpt-lbl">正确率</div></div>
+          <div class="rpt-stat panel"><div class="rpt-num">${timeStr}</div><div class="rpt-lbl">学习时长</div></div>
+          <div class="rpt-stat panel"><div class="rpt-num">${state.score}</div><div class="rpt-lbl">总积分</div></div>
+        </div>`;
+      const detailRows = qs.map((q, i) => {
+        const ans = state.answers[q.id] || {};
+        const ok = ans.correct === true;
+        const retries = ans.retries || 0;
+        const retryTxt = retries > 0 ? `<span class="retry-badge">重试${retries}次</span>` : '';
+        return `<tr>
+          <td class="rpt-no">${i + 1}</td>
+          <td class="rpt-section">${q.knowledgePoint || q.sectionTitle || '-'}</td>
+          <td class="rpt-stem">${q.topic || q.stem || '-'}</td>
+          <td class="rpt-result ${ok ? 'pass' : 'fail'}">${ok ? '✓ 通过' : '✗ 未完成'}${retryTxt}</td>
+        </tr>`;
+      }).join('');
+      app.innerHTML = `
+        <section class="rpt-wrap">
+          <div class="rpt-header panel">
+            <p class="eyebrow">学习报告 · 数海漫游</p>
+            <h2 class="stage-title">${resultLabel}</h2>
+            <p class="rpt-subtitle">完成 ${correctCount}/${total} 道题，正确率 ${accuracy}%，耗时 ${timeStr}</p>
+          </div>
+          ${statsHtml}
+          <div class="panel rpt-detail">
+            <h3 class="rpt-detail-title">题目详情</h3>
+            <div class="rpt-table-wrap">
+              <table class="rpt-table">
+                <thead><tr><th>#</th><th>知识点</th><th>题干</th><th>结果</th></tr></thead>
+                <tbody>${detailRows}</tbody>
+              </table>
+            </div>
+          </div>
+          <div class="rpt-footer panel">
+            <p class="rpt-submitted-tip">✓ 学习结果已自动提交</p>
+            <div class="actions">
+              <button class="btn ghost" id="rpt-restart">重新开始</button>
+            </div>
+          </div>
+        </section>`;
+      document.getElementById('rpt-restart').addEventListener('click', () => {
+        Object.assign(state, { index:0, startedAt:Date.now(), completed:[], answers:{}, score:0, combo:0, bestCombo:0, badges:[] });
+        render();
+      });
+    }
+    function toast(text) { const el = document.createElement('div'); el.className = 'toast'; el.textContent = text; document.body.appendChild(el); setTimeout(() => el.remove(), 2200); }
+
+    function playSound(type) {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const t = ctx.currentTime;
+        const tone = (freq, startT, dur, vol, wave = 'sine', freqEnd) => {
+          const osc = ctx.createOscillator(), gain = ctx.createGain();
+          osc.connect(gain); gain.connect(ctx.destination);
+          osc.type = wave; osc.frequency.setValueAtTime(freq, startT);
+          if (freqEnd) osc.frequency.exponentialRampToValueAtTime(freqEnd, startT + dur);
+          gain.gain.setValueAtTime(0, startT);
+          gain.gain.linearRampToValueAtTime(vol, startT + 0.018);
+          gain.gain.exponentialRampToValueAtTime(0.001, startT + dur);
+          osc.start(startT); osc.stop(startT + dur + 0.05);
+        };
+        if (type === 'correct') {
+          /* 低鼓击 */
+          tone(80, t, 0.18, 0.55, 'sine', 40);
+          tone(160, t, 0.12, 0.3, 'sine', 60);
+          /* 上行亮音阶 C5→E5→G5→C6→E6 */
+          [[523, 0.06], [659, 0.15], [784, 0.24], [1047, 0.33], [1319, 0.42]].forEach(([f, d]) => {
+            tone(f, t + d, 0.38, 0.38, 'triangle');
+            tone(f * 2, t + d, 0.22, 0.12, 'sine');         /* 八度泛音 */
+          });
+          /* 最终和弦爆发 */
+          [523, 659, 784, 1047, 1319].forEach(f => tone(f, t + 0.52, 0.55, 0.22, 'triangle'));
+        } else {
+          /* 冲击低音 */
+          tone(200, t, 0.08, 0.5, 'sine', 60);
+          /* 双层下滑"waaah" */
+          tone(520, t + 0.04, 0.52, 0.42, 'sawtooth', 100);
+          tone(260, t + 0.04, 0.52, 0.22, 'square', 50);
+          /* 末尾模糊噪音感 */
+          tone(180, t + 0.28, 0.28, 0.18, 'sawtooth', 70);
+        }
+      } catch (e) {}
+    }
+
+    function clearConfetti() {
+      if (confettiState.raf) cancelAnimationFrame(confettiState.raf);
+      if (confettiState.canvas) confettiState.canvas.remove();
+      confettiState = { canvas:null, raf:0 };
+    }
+
+    function confetti() {
+      clearConfetti();
+      const canvas = document.createElement('canvas');
+      canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:9999;';
+      canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+      document.body.appendChild(canvas);
+      confettiState.canvas = canvas;
+      const ctx = canvas.getContext('2d');
+      const colors = ['#ff4f8b','#ff9f1c','#00a6c8','#74d99f','#ffd166','#a29bfe','#fd79a8','#ff6b6b','#48dbfb','#1dd1a1'];
+      const cx = canvas.width / 2, cy = canvas.height * 0.42;
+      const particles = Array.from({length: 120}, (_, i) => {
+        const angle = (Math.random() * Math.PI * 2);
+        const speed = 10 + Math.random() * 16;
+        return {
+          x: cx + (Math.random() - 0.5) * 60,
+          y: cy + (Math.random() - 0.5) * 40,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed - 6,
+          w: Math.random() * 11 + 5, h: Math.random() * 6 + 3,
+          color: colors[i % colors.length],
+          rot: Math.random() * Math.PI * 2,
+          rotV: (Math.random() - 0.5) * 0.32,
+          gravity: 0.34 + Math.random() * 0.14,
+          drag: 0.95
+        };
+      });
+      let frame = 0;
+      (function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+          p.vx *= p.drag; p.vy *= p.drag;
+          p.x += p.vx; p.y += p.vy; p.vy += p.gravity; p.rot += p.rotV;
+          ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+          ctx.fillStyle = p.color;
+          ctx.globalAlpha = Math.max(0, 1 - frame / 36);
+          ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+          ctx.restore();
+        });
+        if (++frame < 40) {
+          confettiState.raf = requestAnimationFrame(draw);
+        } else {
+          clearConfetti();
+        }
+      })();
+    }
+
+    function shake() {
+      const el = document.querySelector('.main');
+      if (!el) return;
+      el.classList.remove('shake');
+      void el.offsetWidth;
+      el.classList.add('shake');
+      setTimeout(() => el.classList.remove('shake'), 500);
+    }
+  </script>
+</body>
+</html>

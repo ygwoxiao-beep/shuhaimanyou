@@ -1,0 +1,190 @@
+{
+  "id": "number-sea-explorer-2026-summer-k2-l1",
+  "title": "数海漫游",
+  "subtitle": "2026年暑假新大班 第1讲",
+  "scorm": {
+    "edition": "SCORM 2004 4th Edition",
+    "schemaVersion": "2004 4th Edition"
+  },
+  "source": {
+    "pdf": "/Users/eeo/Downloads/2026年暑假新大班 第1讲数海漫游.pdf",
+    "pages": 22
+  },
+  "theme": {
+    "primary": "#00a6c8",
+    "secondary": "#ff9f1c",
+    "accent": "#ff4f8b",
+    "deep": "#073b4c"
+  },
+  "cover": {
+    "headline": "欢迎探险家",
+    "subheadline": "潜入数海，找到藏在地图和星星里的数字规律",
+    "cta": "开始探险"
+  },
+  "flow": [
+    {
+      "id": "welcome",
+      "title": "欢迎探险家",
+      "kind": "cover"
+    },
+    {
+      "id": "video-1",
+      "title": "视频1：进入数海",
+      "kind": "video",
+      "video": "https://static.eeo.cn/upload/files/file01/20260630/03_06_fd0fe85d0e3f0093239af6a8626e50e4.mp4",
+      "sourcePage": 2
+    },
+    {
+      "id": "digit-origin",
+      "title": "数字探险动画",
+      "kind": "concept",
+      "sourcePage": 5
+    },
+    {
+      "id": "q-map-1",
+      "title": "闯关1：点击数字",
+      "kind": "question"
+    },
+    {
+      "id": "q-map-2",
+      "title": "闯关2：拖拽数字",
+      "kind": "question"
+    },
+    {
+      "id": "q-star-fill",
+      "title": "练一练：星际启航",
+      "kind": "question"
+    },
+    {
+      "id": "q-treasure-map",
+      "title": "练一练：宝藏地图",
+      "kind": "question"
+    },
+    {
+      "id": "video-2",
+      "title": "视频2：继续探险",
+      "kind": "video",
+      "video": "https://static.eeo.cn/upload/files/file01/20260630/03_06_e0c0edb9b87b8b61af6729f3ce720090.mp4",
+      "sourcePage": 9
+    },
+    {
+      "id": "q-sign-1",
+      "title": "指示牌填空",
+      "kind": "question"
+    },
+    {
+      "id": "q-sign-2",
+      "title": "练一练：指示牌填空",
+      "kind": "question"
+    },
+    {
+      "id": "q-wire-1",
+      "title": "穿线挑战",
+      "kind": "question"
+    },
+    {
+      "id": "q-wire-2",
+      "title": "练一练：拖拽补线",
+      "kind": "question"
+    },
+    {
+      "id": "q-final-1",
+      "title": "巩固1：地图找数字",
+      "kind": "question"
+    },
+    {
+      "id": "q-final-2",
+      "title": "巩固2：星际启航",
+      "kind": "question"
+    },
+    {
+      "id": "q-final-3",
+      "title": "巩固3：地图填空",
+      "kind": "question"
+    },
+    {
+      "id": "q-final-4",
+      "title": "巩固4：指示牌填空",
+      "kind": "question"
+    },
+    {
+      "id": "q-final-5",
+      "title": "巩固5：指示牌填空",
+      "kind": "question"
+    },
+    {
+      "id": "q-final-6",
+      "title": "巩固6：穿线补数",
+      "kind": "question"
+    },
+    {
+      "id": "q-final-7",
+      "title": "巩固7：穿线挑战",
+      "kind": "question"
+    },
+    {
+      "id": "report",
+      "title": "学习报告",
+      "kind": "report"
+    }
+  ],
+  "sections": [
+    {
+      "id": "s1",
+      "title": "数字起源",
+      "summary": "认识阿拉伯数字 0-9，观察重复数字。"
+    },
+    {
+      "id": "s2",
+      "title": "分组法",
+      "summary": "在地图中找重复出现的数字，并把空格补完整。"
+    },
+    {
+      "id": "s3",
+      "title": "指示牌",
+      "summary": "根据左右数字推理中间答案。"
+    },
+    {
+      "id": "s4",
+      "title": "穿线法",
+      "summary": "沿着数字顺序连接路径。"
+    },
+    {
+      "id": "s5",
+      "title": "巩固挑战",
+      "summary": "用点击、输入和拖拽完成最终宝藏。"
+    }
+  ],
+  "game": {
+    "baseScore": 20,
+    "speedBonus": 8,
+    "videoScore": 5,
+    "passingScore": 80,
+    "badges": [
+      {
+        "id": "sea-entry",
+        "label": "入海探险家",
+        "threshold": 10
+      },
+      {
+        "id": "map-reader",
+        "label": "地图观察员",
+        "threshold": 45
+      },
+      {
+        "id": "line-master",
+        "label": "穿线高手",
+        "threshold": 85
+      },
+      {
+        "id": "treasure-captain",
+        "label": "宝藏船长",
+        "threshold": 125
+      }
+    ]
+  },
+  "report": {
+    "title": "学习报告",
+    "summary": "你完成了数字识别、规律推理、拖拽补空和穿线挑战。"
+  }
+}

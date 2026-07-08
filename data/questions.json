@@ -1,0 +1,682 @@
+[
+  {
+    "id": "digit-origin",
+    "sectionId": "s1",
+    "sectionTitle": "数字探险动画",
+    "type": "concept",
+    "sourcePage": "assets/pages/page-05.jpg",
+    "stem": "阿拉伯数字起源于古印度，今天我们会用 0-9 完成宝藏探险。",
+    "prompt": "点击发光数字，点亮 0 到 9 的数字泡泡。",
+    "digits": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9"
+    ],
+    "success": "数字能量已点亮。",
+    "explanation": "所有数字都可以成为地图、指示牌和穿线路径里的线索。",
+    "knowledgePoint": "数字认知基础",
+    "topic": "认识阿拉伯数字"
+  },
+  {
+    "id": "q-map-1",
+    "sectionId": "s2",
+    "sectionTitle": "闯关1：点击重复数字",
+    "type": "mapClick",
+    "sourcePage": "assets/pages/page-05.jpg",
+    "stem": "智小圆发现了宝藏地图，先找出出现次数最多的数字。",
+    "prompt": "点击地图下方的数字按钮，选出宝藏上的关键数字。",
+    "options": [
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "answer": "1",
+    "count": 5,
+    "success": "找到了，数字 1 是这张地图的分组线索。",
+    "failure": "再观察地图上黄色方块里的数字，哪一个出现最多？",
+    "explanation": "分组法的第一步，是把重复出现的数字看成同一组线索。",
+    "knowledgePoint": "分组法",
+    "topic": "用分组法找出路径中的关键数字"
+  },
+  {
+    "id": "q-map-2",
+    "sectionId": "s2",
+    "sectionTitle": "闯关2：拖拽数字补地图",
+    "type": "imageOverlayDrag",
+    "sourcePage": "assets/pages/page-07.jpg",
+    "stem": "智小圆发现了宝藏地图，路径上有两个空白宝藏格。",
+    "prompt": "把数字直接拖到图中的空格里。",
+    "tokens": [
+      "5",
+      "6",
+      "3"
+    ],
+    "success": "地图补齐了！两个空格分别是 5 和 6。",
+    "failure": "仔细看图中已有的数字，两个空格分别缺哪个数？",
+    "explanation": "路径按分组法规律，两个空格分别是数字 5 和 6。",
+    "overlayTargets": [
+      {
+        "id": "top-path",
+        "answer": "5",
+        "left": 51.7,
+        "top": 50.2
+      },
+      {
+        "id": "finish",
+        "answer": "6",
+        "left": 59.2,
+        "top": 56.8
+      }
+    ],
+    "knowledgePoint": "分组法",
+    "topic": "分组法：补全宝藏地图空白格"
+  },
+  {
+    "id": "q-star-fill",
+    "sectionId": "s2",
+    "sectionTitle": "练一练：星际启航",
+    "type": "imageOverlayDrag",
+    "sourcePage": "assets/pages/page-star-fill.png",
+    "stem": "星际启航路径上有 2 颗空白星星，观察规律：6、5、4 循环出现。",
+    "prompt": "把正确的数字拖到图中的空白星星上。",
+    "success": "答对了！6、5、4 循环规律完成！",
+    "failure": "仔细看：6、5、4 循环，空白星星是哪两个？",
+    "explanation": "规律是 6→5→4 循环，最后两个空白星依次是 6 和 5。",
+    "tokens": [
+      "4",
+      "5",
+      "6"
+    ],
+    "overlayTargets": [
+      {
+        "id": "star-1",
+        "answer": "6",
+        "left": 61.2,
+        "top": 76.3
+      },
+      {
+        "id": "star-2",
+        "answer": "5",
+        "left": 67.8,
+        "top": 61.1
+      }
+    ],
+    "knowledgePoint": "找规律（周期问题）",
+    "topic": "找出星际路径的循环数字规律"
+  },
+  {
+    "id": "q-treasure-map",
+    "sectionId": "s2",
+    "sectionTitle": "练一练：宝藏地图",
+    "type": "imageOverlayDrag",
+    "sourcePage": "assets/pages/page-treasure-map.png",
+    "stem": "智小圆发现了宝藏地图，路径上有三个空格！",
+    "prompt": "把数字直接拖到图中的空格里。",
+    "tokens": [
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "overlayTargets": [
+      {
+        "id": "blank-1",
+        "answer": "1",
+        "left": 71.0,
+        "top": 49.8
+      },
+      {
+        "id": "blank-2",
+        "answer": "3",
+        "left": 60.4,
+        "top": 62.9
+      },
+      {
+        "id": "blank-3",
+        "answer": "2",
+        "left": 66.9,
+        "top": 75.8
+      }
+    ],
+    "success": "宝藏地图补全了！每一段路径的数字都按规律填好了。",
+    "failure": "仔细看每段路径：{5,4}→{5,4,3}→{5,4,3,2}→{5,4,?,?,?}，规律是什么？",
+    "explanation": "路径按 {5,4}→{5,4,3}→{5,4,3,2}→{5,4,3,2,1} 递增，三个空格答案是 1、3、2。",
+    "knowledgePoint": "分组法",
+    "topic": "分组法：填写宝藏路径空格"
+  },
+  {
+    "id": "q-sign-1",
+    "sectionId": "s3",
+    "sectionTitle": "指示牌填空",
+    "type": "signInput",
+    "sourcePage": "assets/pages/page-10.jpg",
+    "stem": "观察指示牌：1 和 2 组成 132，2 和 3 组成 253，3 和 1 组成 341。",
+    "prompt": "左边是 4，右边是 2，中间应该填什么？",
+    "rows": [
+      [
+        "1",
+        "132",
+        "2"
+      ],
+      [
+        "2",
+        "253",
+        "3"
+      ],
+      [
+        "3",
+        "341",
+        "1"
+      ],
+      [
+        "4",
+        "",
+        "2"
+      ]
+    ],
+    "answer": "462",
+    "success": "推理成功。",
+    "failure": "看中间三位：第一位取左边，中间位是左右相加，最后一位取右边。",
+    "explanation": "4 和 2 的中间数字是 4、6、2，所以答案是 462。",
+    "knowledgePoint": "数位组合规律",
+    "topic": "从指示牌观察数位组合规律"
+  },
+  {
+    "id": "q-sign-2",
+    "sectionId": "s3",
+    "sectionTitle": "练一练：指示牌填空",
+    "type": "signInput",
+    "sourcePage": "assets/pages/page-sign-2.png",
+    "stem": "观察指示牌：4 和 5 组成 415，3 和 6 组成 336，7 和 2 组成 752。",
+    "prompt": "左边是 9，右边是 1，中间应该填什么？",
+    "rows": [
+      [
+        "4",
+        "415",
+        "5"
+      ],
+      [
+        "3",
+        "336",
+        "6"
+      ],
+      [
+        "7",
+        "752",
+        "2"
+      ],
+      [
+        "9",
+        "",
+        "1"
+      ]
+    ],
+    "answer": "981",
+    "success": "推理成功！",
+    "failure": "仔细看：中间三位数的第一位是左边，最后一位是右边，中间那位是左边减右边。",
+    "explanation": "规律：中间数 = [左][左-右][右]，所以 9 和 1 得到 9、8、1 → 981。",
+    "knowledgePoint": "数位组合规律",
+    "topic": "数位组合规律练习"
+  },
+  {
+    "id": "q-wire-1",
+    "sectionId": "s4",
+    "sectionTitle": "穿线挑战",
+    "type": "wirePath",
+    "sourcePage": "assets/pages/page-12.jpg",
+    "stem": "宝藏密码藏在数字线里。",
+    "prompt": "按 1 → 8 的顺序点击数字，完成穿线。",
+    "grid": [
+      [
+        "",
+        "7",
+        "8",
+        "",
+        ""
+      ],
+      [
+        "",
+        "6",
+        "1",
+        "2",
+        ""
+      ],
+      [
+        "",
+        "5",
+        "4",
+        "3",
+        ""
+      ]
+    ],
+    "sequence": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8"
+    ],
+    "success": "穿线完成，密码路径亮起来了。",
+    "failure": "要从 1 开始，按相邻顺序一路连到 8。",
+    "explanation": "穿线法就是从小到大找到连续路径。",
+    "knowledgePoint": "数字顺序",
+    "topic": "按正确顺序连接数字路径"
+  },
+  {
+    "id": "q-wire-2",
+    "sectionId": "s4",
+    "sectionTitle": "练一练：拖拽补线",
+    "type": "gridFill",
+    "sourcePage": "assets/pages/page-13.jpg",
+    "stem": "把缺失数字放回格子，让 1 到 15 能沿路径连起来。",
+    "prompt": "拖拽数字到空格，补出连续路径。",
+    "tokens": [
+      "4",
+      "5",
+      "8",
+      "13",
+      "14"
+    ],
+    "grid": [
+      [
+        "1",
+        "2",
+        "3",
+        "",
+        "",
+        ""
+      ],
+      [
+        "6",
+        "",
+        "",
+        "15",
+        "",
+        ""
+      ],
+      [
+        "7",
+        "",
+        "9",
+        "10",
+        "11",
+        "12"
+      ]
+    ],
+    "targets": [
+      {
+        "id": "r2c3",
+        "row": 1,
+        "col": 2,
+        "answer": "4"
+      },
+      {
+        "id": "r2c2",
+        "row": 1,
+        "col": 1,
+        "answer": "5"
+      },
+      {
+        "id": "r3c2",
+        "row": 2,
+        "col": 1,
+        "answer": "8"
+      },
+      {
+        "id": "r2c5",
+        "row": 1,
+        "col": 4,
+        "answer": "14"
+      },
+      {
+        "id": "r2c6",
+        "row": 1,
+        "col": 5,
+        "answer": "13"
+      }
+    ],
+    "success": "连续数字补全了。",
+    "failure": "沿着 1、2、3 往后想，先找到 4 和 5。",
+    "explanation": "穿线题要先确定方向，再把缺失的连续数字放回路径。",
+    "knowledgePoint": "数字顺序·路径填空",
+    "topic": "补全1到15的数字路径"
+  },
+  {
+    "id": "q-final-1",
+    "sectionId": "s5",
+    "sectionTitle": "巩固1：地图找数字",
+    "type": "imageOverlayDrag",
+    "sourcePage": "assets/pages/page-final-1.png",
+    "stem": "加加发现了宝藏地图，路径上有空格，帮他找出宝藏上的数字吧！",
+    "prompt": "把数字直接拖到图中的空格里。",
+    "answer": "8",
+    "success": "所有空格填对了！分组规律完成！",
+    "failure": "仔细看路径上 7 和 8 的分组规律，找出缺少的数字。",
+    "explanation": "路径按分组法排列，空格按 7、8 的规律填入。",
+    "tokens": [
+      "7",
+      "8",
+      "7",
+      "8",
+      "7",
+      "7"
+    ],
+    "overlayTargets": [
+      {
+        "id": "b1",
+        "answer": "7",
+        "left": 50.6,
+        "top": 59.6
+      },
+      {
+        "id": "b2",
+        "answer": "7",
+        "left": 64.0,
+        "top": 59.4
+      },
+      {
+        "id": "b3",
+        "answer": "8",
+        "left": 57.6,
+        "top": 71.1
+      },
+      {
+        "id": "b4",
+        "answer": "8",
+        "left": 38.8,
+        "top": 77.1
+      },
+      {
+        "id": "b5",
+        "answer": "7",
+        "left": 32.7,
+        "top": 86.3
+      },
+      {
+        "id": "b6",
+        "answer": "7",
+        "left": 42.4,
+        "top": 89.5
+      }
+    ],
+    "knowledgePoint": "分组法（综合应用）",
+    "topic": "用分组法填写地图空格"
+  },
+  {
+    "id": "q-final-2",
+    "sectionId": "s5",
+    "sectionTitle": "巩固2：星际启航",
+    "type": "imageOverlayDrag",
+    "sourcePage": "assets/pages/page-final-2.png",
+    "stem": "星际启航路径上有 2 颗空白星星，规律是 1、5、10 循环出现。",
+    "prompt": "把正确的数字拖到图中的空白星星上。",
+    "tokens": [
+      "1",
+      "5",
+      "10",
+      "1",
+      "5",
+      "10"
+    ],
+    "overlayTargets": [
+      {
+        "id": "b1",
+        "answer": "10",
+        "left": 49.3,
+        "top": 48.2
+      },
+      {
+        "id": "b2",
+        "answer": "5",
+        "left": 70.6,
+        "top": 63.8
+      },
+      {
+        "id": "b3",
+        "answer": "5",
+        "left": 54.2,
+        "top": 89.8
+      },
+      {
+        "id": "b4",
+        "answer": "10",
+        "left": 63.6,
+        "top": 81.2
+      }
+    ],
+    "success": "太棒了！四个空白星都填对了！",
+    "failure": "仔细观察1、5、10的循环规律，找出空白星的数字。",
+    "explanation": "路径按 1→5→10 循环排列，空格按规律填入。",
+    "knowledgePoint": "找规律（周期问题）",
+    "topic": "找出1、5、10循环规律并填空"
+  },
+  {
+    "id": "q-final-3",
+    "sectionId": "s5",
+    "sectionTitle": "巩固3：地图填空",
+    "type": "imageOverlayDrag",
+    "sourcePage": "assets/pages/page-final-3.png",
+    "stem": "加加发现了新地图，路径上有空格，用分组法找出规律！",
+    "prompt": "把正确数字拖到图中的空格里。",
+    "tokens": [
+      "5",
+      "6",
+      "7",
+      "8",
+      "9"
+    ],
+    "overlayTargets": [
+      {
+        "id": "blank-1",
+        "answer": "5",
+        "left": 59.3,
+        "top": 51.6
+      },
+      {
+        "id": "blank-2",
+        "answer": "8",
+        "left": 34.3,
+        "top": 87.6
+      }
+    ],
+    "success": "地图填好了！分组规律完成！",
+    "failure": "仔细看路径上的分组规律，找出缺少的数字。",
+    "explanation": "按照路径分组规律，三个空格分别是 9、7、6。",
+    "knowledgePoint": "分组法（综合应用）",
+    "topic": "分组法综合：地图路径填空"
+  },
+  {
+    "id": "q-final-4",
+    "sectionId": "s5",
+    "sectionTitle": "巩固4：指示牌填空",
+    "type": "signInput",
+    "sourcePage": "assets/pages/page-final-4.png",
+    "stem": "观察指示牌：1 和 7 组成 17，2 和 6 组成 26，3 和 5 组成 35。",
+    "prompt": "左边是 4，右边是 9，中间应该填什么？",
+    "rows": [
+      [
+        "1",
+        "17",
+        "7"
+      ],
+      [
+        "2",
+        "26",
+        "6"
+      ],
+      [
+        "3",
+        "35",
+        "5"
+      ],
+      [
+        "4",
+        "",
+        "9"
+      ]
+    ],
+    "answer": "49",
+    "success": "推理成功！",
+    "failure": "仔细看：中间的数字是把左边和右边直接拼在一起。",
+    "explanation": "规律：中间 = [左][右]，所以 4 和 9 → 49。",
+    "knowledgePoint": "数位组合规律",
+    "topic": "两位数数位组合规律应用"
+  },
+  {
+    "id": "q-final-5",
+    "sectionId": "s5",
+    "sectionTitle": "巩固5：指示牌填空",
+    "type": "signInput",
+    "sourcePage": "assets/pages/page-final-5.png",
+    "stem": "观察指示牌：6 和 1 组成 615，7 和 2 组成 725，8 和 3 组成 835。",
+    "prompt": "左边是 9，右边是 4，中间应该填什么？",
+    "rows": [
+      [
+        "6",
+        "615",
+        "1"
+      ],
+      [
+        "7",
+        "725",
+        "2"
+      ],
+      [
+        "8",
+        "835",
+        "3"
+      ],
+      [
+        "9",
+        "",
+        "4"
+      ]
+    ],
+    "answer": "945",
+    "success": "推理成功！",
+    "failure": "仔细看：中间三位数 = [左][右][左-右]，6,1 → 6,1,5 → 615。",
+    "explanation": "规律：中间 = [左][右][左-右]，9,4 → 9,4,5 → 945。",
+    "knowledgePoint": "数位组合规律",
+    "topic": "三位数数位组合规律应用"
+  },
+  {
+    "id": "q-final-6",
+    "sectionId": "s5",
+    "sectionTitle": "巩固6：穿线补数",
+    "type": "gridFill",
+    "sourcePage": "assets/pages/page-final-6.png",
+    "stem": "把缺失数字放回格子，让 1 到 12 沿路径连起来。",
+    "prompt": "拖拽数字到空格，补出连续路径。",
+    "tokens": [
+      "4",
+      "7",
+      "9"
+    ],
+    "grid": [
+      [
+        "1",
+        "2",
+        "3",
+        ""
+      ],
+      [
+        "8",
+        "",
+        "6",
+        "5"
+      ],
+      [
+        "",
+        "10",
+        "11",
+        "12"
+      ]
+    ],
+    "targets": [
+      {
+        "id": "r1c4",
+        "row": 0,
+        "col": 3,
+        "answer": "4"
+      },
+      {
+        "id": "r2c2",
+        "row": 1,
+        "col": 1,
+        "answer": "7"
+      },
+      {
+        "id": "r3c1",
+        "row": 2,
+        "col": 0,
+        "answer": "9"
+      }
+    ],
+    "success": "连续数字补全了！路径 1→12 连通！",
+    "failure": "沿着路径走：1,2,3 后面是4；8,7,6,5 中间缺7；9,10,11,12 中缺9和12。",
+    "explanation": "蛇形路径：1→2→3→4 | 8→7→6→5 | 9→10→11→12。",
+    "knowledgePoint": "数字顺序（综合应用）",
+    "topic": "补全1到12的蛇形路径数字"
+  },
+  {
+    "id": "q-final-7",
+    "sectionId": "s5",
+    "sectionTitle": "巩固7：穿线挑战",
+    "type": "wirePath",
+    "sourcePage": "assets/pages/page-final-7.png",
+    "stem": "宝藏密码藏在数字网格里，按顺序连线。",
+    "prompt": "按 1 → 8 的顺序点击数字，完成穿线。",
+    "grid": [
+      [
+        "1",
+        "2",
+        "4",
+        "7"
+      ],
+      [
+        "3",
+        "5",
+        "8",
+        ""
+      ],
+      [
+        "6",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        ""
+      ]
+    ],
+    "sequence": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8"
+    ],
+    "success": "穿线完成，密码路径亮起来了！",
+    "failure": "要从 1 开始，按相邻顺序一路连到 8。",
+    "explanation": "穿线法：从小到大找到连续路径，每步走到相邻格子。",
+    "knowledgePoint": "数字顺序（综合应用）",
+    "topic": "按顺序连接1到8的数字挑战"
+  }
+]

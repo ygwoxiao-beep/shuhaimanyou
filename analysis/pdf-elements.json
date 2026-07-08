@@ -1,0 +1,322 @@
+[
+  {
+    "page": 1,
+    "size": [
+      1786,
+      907
+    ],
+    "text": "欢迎探险家",
+    "text_chars": 5,
+    "word_count": 1,
+    "drawings": 1,
+    "images": 6,
+    "numbers": []
+  },
+  {
+    "page": 2,
+    "size": [
+      1786,
+      907
+    ],
+    "text": "",
+    "text_chars": 0,
+    "word_count": 0,
+    "drawings": 3,
+    "images": 3,
+    "numbers": []
+  },
+  {
+    "page": 3,
+    "size": [
+      1786,
+      907
+    ],
+    "text": "",
+    "text_chars": 0,
+    "word_count": 0,
+    "drawings": 3,
+    "images": 2,
+    "numbers": []
+  },
+  {
+    "page": 4,
+    "size": [
+      1786,
+      907
+    ],
+    "text": "数海漫游\n1",
+    "text_chars": 6,
+    "word_count": 2,
+    "drawings": 1,
+    "images": 9,
+    "numbers": [
+      "1"
+    ]
+  },
+  {
+    "page": 5,
+    "size": [
+      1786,
+      907
+    ],
+    "text": "闯关1\n阿拉伯数字：\n0、1、2、3、4、5、6、7、8、9\n起源于古印度\n分组法",
+    "text_chars": 41,
+    "word_count": 5,
+    "drawings": 5,
+    "images": 8,
+    "numbers": [
+      "1",
+      "0",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9"
+    ]
+  },
+  {
+    "page": 6,
+    "size": [
+      1786,
+      907
+    ],
+    "text": "",
+    "text_chars": 0,
+    "word_count": 0,
+    "drawings": 6,
+    "images": 7,
+    "numbers": []
+  },
+  {
+    "page": 7,
+    "size": [
+      1786,
+      907
+    ],
+    "text": "闯关2\n分组法",
+    "text_chars": 7,
+    "word_count": 2,
+    "drawings": 5,
+    "images": 8,
+    "numbers": [
+      "2"
+    ]
+  },
+  {
+    "page": 8,
+    "size": [
+      1786,
+      907
+    ],
+    "text": "",
+    "text_chars": 0,
+    "word_count": 0,
+    "drawings": 6,
+    "images": 6,
+    "numbers": []
+  },
+  {
+    "page": 9,
+    "size": [
+      1786,
+      907
+    ],
+    "text": "",
+    "text_chars": 0,
+    "word_count": 0,
+    "drawings": 3,
+    "images": 3,
+    "numbers": []
+  },
+  {
+    "page": 10,
+    "size": [
+      1786,
+      907
+    ],
+    "text": "智小圆继续前行，发现神奇的指示牌，帮助他填一填！",
+    "text_chars": 24,
+    "word_count": 1,
+    "drawings": 5,
+    "images": 7,
+    "numbers": []
+  },
+  {
+    "page": 11,
+    "size": [
+      1786,
+      907
+    ],
+    "text": "智小圆继续前行，发现神奇的指示牌，帮助他填一填！",
+    "text_chars": 24,
+    "word_count": 1,
+    "drawings": 6,
+    "images": 7,
+    "numbers": []
+  },
+  {
+    "page": 12,
+    "size": [
+      1786,
+      907
+    ],
+    "text": "穿线法",
+    "text_chars": 3,
+    "word_count": 1,
+    "drawings": 5,
+    "images": 6,
+    "numbers": []
+  },
+  {
+    "page": 13,
+    "size": [
+      1786,
+      907
+    ],
+    "text": "",
+    "text_chars": 0,
+    "word_count": 0,
+    "drawings": 6,
+    "images": 6,
+    "numbers": []
+  },
+  {
+    "page": 14,
+    "size": [
+      1786,
+      907
+    ],
+    "text": "1. 重复出现——分组法\n2. 有加减关系——计算法？\n3. 从小到大按顺序出现——穿线法",
+    "text_chars": 45,
+    "word_count": 6,
+    "drawings": 3,
+    "images": 4,
+    "numbers": [
+      "1",
+      "2",
+      "3"
+    ]
+  },
+  {
+    "page": 15,
+    "size": [
+      1786,
+      907
+    ],
+    "text": "本讲巩固\n本讲巩固",
+    "text_chars": 9,
+    "word_count": 2,
+    "drawings": 1,
+    "images": 1,
+    "numbers": []
+  },
+  {
+    "page": 16,
+    "size": [
+      1786,
+      907
+    ],
+    "text": "巩固1\n加加发现了宝藏地图，快帮他找出宝藏上的数字吧！",
+    "text_chars": 27,
+    "word_count": 2,
+    "drawings": 4,
+    "images": 4,
+    "numbers": [
+      "1"
+    ]
+  },
+  {
+    "page": 17,
+    "size": [
+      1786,
+      907
+    ],
+    "text": "巩固2",
+    "text_chars": 3,
+    "word_count": 1,
+    "drawings": 4,
+    "images": 5,
+    "numbers": [
+      "2"
+    ]
+  },
+  {
+    "page": 18,
+    "size": [
+      1786,
+      907
+    ],
+    "text": "巩固3\n加加发现了宝藏地图，快帮他找出宝藏上的数字吧！",
+    "text_chars": 27,
+    "word_count": 2,
+    "drawings": 4,
+    "images": 4,
+    "numbers": [
+      "3"
+    ]
+  },
+  {
+    "page": 19,
+    "size": [
+      1786,
+      907
+    ],
+    "text": "巩固4\n加加发现了宝藏地图，快帮他找出宝藏上的数字吧！",
+    "text_chars": 27,
+    "word_count": 2,
+    "drawings": 4,
+    "images": 4,
+    "numbers": [
+      "4"
+    ]
+  },
+  {
+    "page": 20,
+    "size": [
+      1786,
+      907
+    ],
+    "text": "巩固5\n加加发现了宝藏地图，快帮他找出宝藏上的数字吧！",
+    "text_chars": 27,
+    "word_count": 2,
+    "drawings": 4,
+    "images": 4,
+    "numbers": [
+      "5"
+    ]
+  },
+  {
+    "page": 21,
+    "size": [
+      1786,
+      907
+    ],
+    "text": "巩固6\n加加发现了宝藏地图，快帮他找出宝藏上的数字吧！",
+    "text_chars": 27,
+    "word_count": 2,
+    "drawings": 4,
+    "images": 4,
+    "numbers": [
+      "6"
+    ]
+  },
+  {
+    "page": 22,
+    "size": [
+      1786,
+      907
+    ],
+    "text": "巩固7\n加加发现了宝藏地图，快帮他找出宝藏上的数字吧！",
+    "text_chars": 27,
+    "word_count": 2,
+    "drawings": 4,
+    "images": 4,
+    "numbers": [
+      "7"
+    ]
+  }
+]

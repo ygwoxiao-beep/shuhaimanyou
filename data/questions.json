@@ -4,7 +4,7 @@
     "sectionId": "s1",
     "sectionTitle": "数字探险动画",
     "type": "concept",
-    "sourcePage": "assets/pages/page-05.jpg",
+    "sourcePage": "assets/pages/page-05.png",
     "stem": "阿拉伯数字起源于古印度，今天我们会用 0-9 完成宝藏探险。",
     "prompt": "点击发光数字，点亮 0 到 9 的数字泡泡。",
     "digits": [
@@ -29,7 +29,7 @@
     "sectionId": "s2",
     "sectionTitle": "闯关1：点击重复数字",
     "type": "mapClick",
-    "sourcePage": "assets/pages/page-05.jpg",
+    "sourcePage": "assets/pages/page-05.png",
     "stem": "智小圆发现了宝藏地图，先找出出现次数最多的数字。",
     "prompt": "点击地图下方的数字按钮，选出宝藏上的关键数字。",
     "options": [
@@ -51,7 +51,7 @@
     "sectionId": "s2",
     "sectionTitle": "闯关2：拖拽数字补地图",
     "type": "imageOverlayDrag",
-    "sourcePage": "assets/pages/page-07.jpg",
+    "sourcePage": "assets/pages/page-07.png",
     "stem": "智小圆发现了宝藏地图，路径上有两个空白宝藏格。",
     "prompt": "把数字直接拖到图中的空格里。",
     "tokens": [
@@ -157,7 +157,7 @@
     "sectionId": "s3",
     "sectionTitle": "指示牌填空",
     "type": "signInput",
-    "sourcePage": "assets/pages/page-10.jpg",
+    "sourcePage": "assets/pages/page-10.png",
     "stem": "观察指示牌：1 和 2 组成 132，2 和 3 组成 253，3 和 1 组成 341。",
     "prompt": "左边是 4，右边是 2，中间应该填什么？",
     "rows": [
@@ -231,7 +231,7 @@
     "sectionId": "s4",
     "sectionTitle": "穿线挑战",
     "type": "wirePath",
-    "sourcePage": "assets/pages/page-12.jpg",
+    "sourcePage": "assets/pages/page-12.png",
     "stem": "宝藏密码藏在数字线里。",
     "prompt": "按 1 → 8 的顺序点击数字，完成穿线。",
     "grid": [
@@ -278,7 +278,7 @@
     "sectionId": "s4",
     "sectionTitle": "练一练：拖拽补线",
     "type": "gridFill",
-    "sourcePage": "assets/pages/page-13.jpg",
+    "sourcePage": "assets/pages/page-13.png",
     "stem": "把缺失数字放回格子，让 1 到 15 能沿路径连起来。",
     "prompt": "拖拽数字到空格，补出连续路径。",
     "tokens": [

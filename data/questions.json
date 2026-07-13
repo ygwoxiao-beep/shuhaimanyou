@@ -4,7 +4,7 @@
     "sectionId": "s1",
     "sectionTitle": "数字探险动画",
     "type": "concept",
-    "sourcePage": "assets/pages/page-05.png",
+    "sourcePage": "assets/pages/page-05.webp",
     "stem": "阿拉伯数字起源于古印度，今天我们会用 0-9 完成宝藏探险。",
     "prompt": "点击发光数字，点亮 0 到 9 的数字泡泡。",
     "digits": [
@@ -29,7 +29,7 @@
     "sectionId": "s2",
     "sectionTitle": "闯关1：点击重复数字",
     "type": "mapClick",
-    "sourcePage": "assets/pages/page-05.png",
+    "sourcePage": "assets/pages/page-05.webp",
     "stem": "智小圆发现了宝藏地图，先找出出现次数最多的数字。",
     "prompt": "点击地图下方的数字按钮，选出宝藏上的关键数字。",
     "options": [
@@ -51,7 +51,7 @@
     "sectionId": "s2",
     "sectionTitle": "闯关2：拖拽数字补地图",
     "type": "imageOverlayDrag",
-    "sourcePage": "assets/pages/page-07.png",
+    "sourcePage": "assets/pages/page-07.webp",
     "stem": "智小圆发现了宝藏地图，路径上有两个空白宝藏格。",
     "prompt": "把数字直接拖到图中的空格里。",
     "tokens": [
@@ -84,7 +84,7 @@
     "sectionId": "s2",
     "sectionTitle": "练一练：星际启航",
     "type": "imageOverlayDrag",
-    "sourcePage": "assets/pages/page-star-fill.png",
+    "sourcePage": "assets/pages/page-star-fill.webp",
     "stem": "星际启航路径上有 2 颗空白星星，观察规律：6、5、4 循环出现。",
     "prompt": "把正确的数字拖到图中的空白星星上。",
     "success": "答对了！6、5、4 循环规律完成！",
@@ -117,7 +117,7 @@
     "sectionId": "s2",
     "sectionTitle": "练一练：宝藏地图",
     "type": "imageOverlayDrag",
-    "sourcePage": "assets/pages/page-treasure-map.png",
+    "sourcePage": "assets/pages/page-treasure-map.webp",
     "stem": "智小圆发现了宝藏地图，路径上有三个空格！",
     "prompt": "把数字直接拖到图中的空格里。",
     "tokens": [
@@ -157,7 +157,7 @@
     "sectionId": "s3",
     "sectionTitle": "指示牌填空",
     "type": "signInput",
-    "sourcePage": "assets/pages/page-10.png",
+    "sourcePage": "assets/pages/page-10.webp",
     "stem": "观察指示牌：1 和 2 组成 132，2 和 3 组成 253，3 和 1 组成 341。",
     "prompt": "左边是 4，右边是 2，中间应该填什么？",
     "rows": [
@@ -194,7 +194,7 @@
     "sectionId": "s3",
     "sectionTitle": "练一练：指示牌填空",
     "type": "signInput",
-    "sourcePage": "assets/pages/page-sign-2.png",
+    "sourcePage": "assets/pages/page-sign-2.webp",
     "stem": "观察指示牌：4 和 5 组成 415，3 和 6 组成 336，7 和 2 组成 752。",
     "prompt": "左边是 9，右边是 1，中间应该填什么？",
     "rows": [
@@ -231,7 +231,7 @@
     "sectionId": "s4",
     "sectionTitle": "穿线挑战",
     "type": "wirePath",
-    "sourcePage": "assets/pages/page-12.png",
+    "sourcePage": "assets/pages/page-12.webp",
     "stem": "宝藏密码藏在数字线里。",
     "prompt": "按 1 → 8 的顺序点击数字，完成穿线。",
     "grid": [
@@ -278,7 +278,7 @@
     "sectionId": "s4",
     "sectionTitle": "练一练：拖拽补线",
     "type": "gridFill",
-    "sourcePage": "assets/pages/page-13.png",
+    "sourcePage": "assets/pages/page-13.webp",
     "stem": "把缺失数字放回格子，让 1 到 15 能沿路径连起来。",
     "prompt": "拖拽数字到空格，补出连续路径。",
     "tokens": [
@@ -357,7 +357,7 @@
     "sectionId": "s5",
     "sectionTitle": "巩固1：地图找数字",
     "type": "imageOverlayDrag",
-    "sourcePage": "assets/pages/page-final-1.png",
+    "sourcePage": "assets/pages/page-final-1.webp",
     "stem": "加加发现了宝藏地图，路径上有空格，帮他找出宝藏上的数字吧！",
     "prompt": "把数字直接拖到图中的空格里。",
     "answer": "8",
@@ -418,7 +418,7 @@
     "sectionId": "s5",
     "sectionTitle": "巩固2：星际启航",
     "type": "imageOverlayDrag",
-    "sourcePage": "assets/pages/page-final-2.png",
+    "sourcePage": "assets/pages/page-final-2.webp",
     "stem": "星际启航路径上有 2 颗空白星星，规律是 1、5、10 循环出现。",
     "prompt": "把正确的数字拖到图中的空白星星上。",
     "tokens": [
@@ -466,7 +466,7 @@
     "sectionId": "s5",
     "sectionTitle": "巩固3：地图填空",
     "type": "imageOverlayDrag",
-    "sourcePage": "assets/pages/page-final-3.png",
+    "sourcePage": "assets/pages/page-final-3.webp",
     "stem": "加加发现了新地图，路径上有空格，用分组法找出规律！",
     "prompt": "把正确数字拖到图中的空格里。",
     "tokens": [
@@ -501,7 +501,7 @@
     "sectionId": "s5",
     "sectionTitle": "巩固4：指示牌填空",
     "type": "signInput",
-    "sourcePage": "assets/pages/page-final-4.png",
+    "sourcePage": "assets/pages/page-final-4.webp",
     "stem": "观察指示牌：1 和 7 组成 17，2 和 6 组成 26，3 和 5 组成 35。",
     "prompt": "左边是 4，右边是 9，中间应该填什么？",
     "rows": [
@@ -538,7 +538,7 @@
     "sectionId": "s5",
     "sectionTitle": "巩固5：指示牌填空",
     "type": "signInput",
-    "sourcePage": "assets/pages/page-final-5.png",
+    "sourcePage": "assets/pages/page-final-5.webp",
     "stem": "观察指示牌：6 和 1 组成 615，7 和 2 组成 725，8 和 3 组成 835。",
     "prompt": "左边是 9，右边是 4，中间应该填什么？",
     "rows": [
@@ -575,7 +575,7 @@
     "sectionId": "s5",
     "sectionTitle": "巩固6：穿线补数",
     "type": "gridFill",
-    "sourcePage": "assets/pages/page-final-6.png",
+    "sourcePage": "assets/pages/page-final-6.webp",
     "stem": "把缺失数字放回格子，让 1 到 12 沿路径连起来。",
     "prompt": "拖拽数字到空格，补出连续路径。",
     "tokens": [
@@ -634,7 +634,7 @@
     "sectionId": "s5",
     "sectionTitle": "巩固7：穿线挑战",
     "type": "wirePath",
-    "sourcePage": "assets/pages/page-final-7.png",
+    "sourcePage": "assets/pages/page-final-7.webp",
     "stem": "宝藏密码藏在数字网格里，按顺序连线。",
     "prompt": "按 1 → 8 的顺序点击数字，完成穿线。",
     "grid": [

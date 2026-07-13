@@ -109,7 +109,7 @@
     #oi-tokens { justify-content: center; margin: 8px 0; }
   </style>
 </head>
-<body>
+<body data-mode="static">
   <div class="shell">
     <header class="topbar">
       <div class="brand"><small>SCORM 2004 · Number Sea</small><h1 id="course-title">数海漫游</h1></div>
@@ -121,7 +121,957 @@
     </header>
     <main id="app"></main>
   </div>
-  <script src="scorm-api.js"></script>
+  
+  <!-- SCORM API -->
+  <script>
+(() => {
+  function findApi(win) {
+    let tries = 0;
+    while (win && tries < 12) {
+      if (win.API_1484_11) return { api: win.API_1484_11, version: '2004' };
+      if (win.API) return { api: win.API, version: '1.2' };
+      win = win.parent && win.parent !== win ? win.parent : win.opener;
+      tries += 1;
+    }
+    return null;
+  }
+
+  window.NumberSeaScorm = function createScormRuntime(storagePrefix) {
+    const found = findApi(window);
+    const api = found?.api || null;
+    const version = found?.version || 'local';
+    let connected = false;
+
+    const call = (name, ...args) => {
+      if (!api || typeof api[name] !== 'function') return '';
+      try { return api[name](...args); } catch (error) { console.warn('SCORM call failed', name, error); return ''; }
+    };
+    const keyFor = (key) => `${storagePrefix}:${key}`;
+
+    return {
+      version,
+      initialize() {
+        if (api) {
+          const result = call(version === '2004' ? 'Initialize' : 'LMSInitialize', '');
+          connected = result === true || result === 'true';
+        }
+        return connected;
+      },
+      getValue(key) {
+        if (connected) return call(version === '2004' ? 'GetValue' : 'LMSGetValue', key) || '';
+        return localStorage.getItem(keyFor(key)) || '';
+      },
+      setValue(key, value) {
+        if (connected) call(version === '2004' ? 'SetValue' : 'LMSSetValue', `${key}`, `${value}`);
+        localStorage.setItem(keyFor(key), `${value}`);
+      },
+      commit() { if (connected) call(version === '2004' ? 'Commit' : 'LMSCommit', ''); },
+      finish() { this.commit(); if (connected) call(version === '2004' ? 'Terminate' : 'LMSFinish', ''); },
+      learnerName() {
+        const name = this.getValue(version === '2004' ? 'cmi.learner_name' : 'cmi.core.student_name');
+        return name || '小小探险家';
+      },
+      hydrate() {
+        return {
+          location: this.getValue(version === '2004' ? 'cmi.location' : 'cmi.core.lesson_location'),
+          score: this.getValue(version === '2004' ? 'cmi.score.raw' : 'cmi.core.score.raw'),
+          status: this.getValue(version === '2004' ? 'cmi.completion_status' : 'cmi.core.lesson_status'),
+          suspendData: this.getValue('cmi.suspend_data')
+        };
+      },
+      save(payload) {
+        if (version === '2004') {
+          this.setValue('cmi.location', payload.location);
+          this.setValue('cmi.score.raw', payload.score);
+          this.setValue('cmi.score.min', '0');
+          this.setValue('cmi.score.max', payload.maxScore || '150');
+          this.setValue('cmi.completion_status', payload.completionStatus);
+          this.setValue('cmi.success_status', payload.successStatus);
+          this.setValue('cmi.progress_measure', payload.progressMeasure);
+        } else {
+          this.setValue('cmi.core.lesson_location', payload.location);
+          this.setValue('cmi.core.score.raw', payload.score);
+          this.setValue('cmi.core.lesson_status', payload.completionStatus === 'completed' ? 'passed' : 'incomplete');
+        }
+        this.setValue('cmi.suspend_data', payload.suspendData);
+        this.commit();
+      }
+    };
+  };
+})();
+  </script>
+  <script type="application/json" id="lesson-data">{
+  "id": "number-sea-explorer-2026-summer-k2-l1",
+  "title": "数海漫游",
+  "subtitle": "2026年暑假新大班 第1讲",
+  "scorm": {
+    "edition": "SCORM 2004 4th Edition",
+    "schemaVersion": "2004 4th Edition"
+  },
+  "source": {
+    "pdf": "/Users/eeo/Downloads/2026年暑假新大班 第1讲数海漫游.pdf",
+    "pages": 22
+  },
+  "theme": {
+    "primary": "#00a6c8",
+    "secondary": "#ff9f1c",
+    "accent": "#ff4f8b",
+    "deep": "#073b4c"
+  },
+  "cover": {
+    "headline": "欢迎探险家",
+    "subheadline": "潜入数海，找到藏在地图和星星里的数字规律",
+    "cta": "开始探险"
+  },
+  "flow": [
+    {
+      "id": "welcome",
+      "title": "欢迎探险家",
+      "kind": "cover"
+    },
+    {
+      "id": "video-1",
+      "title": "视频1：进入数海",
+      "kind": "video",
+      "video": "https://static.eeo.cn/upload/files/file01/20260630/03_06_fd0fe85d0e3f0093239af6a8626e50e4.mp4",
+      "sourcePage": 2
+    },
+    {
+      "id": "digit-origin",
+      "title": "数字探险动画",
+      "kind": "concept",
+      "sourcePage": 5
+    },
+    {
+      "id": "q-map-1",
+      "title": "闯关1：点击数字",
+      "kind": "question"
+    },
+    {
+      "id": "q-map-2",
+      "title": "闯关2：拖拽数字",
+      "kind": "question"
+    },
+    {
+      "id": "q-star-fill",
+      "title": "练一练：星际启航",
+      "kind": "question"
+    },
+    {
+      "id": "q-treasure-map",
+      "title": "练一练：宝藏地图",
+      "kind": "question"
+    },
+    {
+      "id": "video-2",
+      "title": "视频2：继续探险",
+      "kind": "video",
+      "video": "https://static.eeo.cn/upload/files/file01/20260630/03_06_e0c0edb9b87b8b61af6729f3ce720090.mp4",
+      "sourcePage": 9
+    },
+    {
+      "id": "q-sign-1",
+      "title": "指示牌填空",
+      "kind": "question"
+    },
+    {
+      "id": "q-sign-2",
+      "title": "练一练：指示牌填空",
+      "kind": "question"
+    },
+    {
+      "id": "q-wire-1",
+      "title": "穿线挑战",
+      "kind": "question"
+    },
+    {
+      "id": "q-wire-2",
+      "title": "练一练：拖拽补线",
+      "kind": "question"
+    },
+    {
+      "id": "q-final-1",
+      "title": "巩固1：地图找数字",
+      "kind": "question"
+    },
+    {
+      "id": "q-final-2",
+      "title": "巩固2：星际启航",
+      "kind": "question"
+    },
+    {
+      "id": "q-final-3",
+      "title": "巩固3：地图填空",
+      "kind": "question"
+    },
+    {
+      "id": "q-final-4",
+      "title": "巩固4：指示牌填空",
+      "kind": "question"
+    },
+    {
+      "id": "q-final-5",
+      "title": "巩固5：指示牌填空",
+      "kind": "question"
+    },
+    {
+      "id": "q-final-6",
+      "title": "巩固6：穿线补数",
+      "kind": "question"
+    },
+    {
+      "id": "q-final-7",
+      "title": "巩固7：穿线挑战",
+      "kind": "question"
+    },
+    {
+      "id": "report",
+      "title": "学习报告",
+      "kind": "report"
+    }
+  ],
+  "sections": [
+    {
+      "id": "s1",
+      "title": "数字起源",
+      "summary": "认识阿拉伯数字 0-9，观察重复数字。"
+    },
+    {
+      "id": "s2",
+      "title": "分组法",
+      "summary": "在地图中找重复出现的数字，并把空格补完整。"
+    },
+    {
+      "id": "s3",
+      "title": "指示牌",
+      "summary": "根据左右数字推理中间答案。"
+    },
+    {
+      "id": "s4",
+      "title": "穿线法",
+      "summary": "沿着数字顺序连接路径。"
+    },
+    {
+      "id": "s5",
+      "title": "巩固挑战",
+      "summary": "用点击、输入和拖拽完成最终宝藏。"
+    }
+  ],
+  "game": {
+    "baseScore": 20,
+    "speedBonus": 8,
+    "videoScore": 5,
+    "passingScore": 80,
+    "badges": [
+      {
+        "id": "sea-entry",
+        "label": "入海探险家",
+        "threshold": 10
+      },
+      {
+        "id": "map-reader",
+        "label": "地图观察员",
+        "threshold": 45
+      },
+      {
+        "id": "line-master",
+        "label": "穿线高手",
+        "threshold": 85
+      },
+      {
+        "id": "treasure-captain",
+        "label": "宝藏船长",
+        "threshold": 125
+      }
+    ]
+  },
+  "report": {
+    "title": "学习报告",
+    "summary": "你完成了数字识别、规律推理、拖拽补空和穿线挑战。"
+  }
+}</script>
+  <script type="application/json" id="questions-data">[
+  {
+    "id": "digit-origin",
+    "sectionId": "s1",
+    "sectionTitle": "数字探险动画",
+    "type": "concept",
+    "sourcePage": "number-sea-explorer/assets/pages/page-05.webp",
+    "stem": "阿拉伯数字起源于古印度，今天我们会用 0-9 完成宝藏探险。",
+    "prompt": "点击发光数字，点亮 0 到 9 的数字泡泡。",
+    "digits": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9"
+    ],
+    "success": "数字能量已点亮。",
+    "explanation": "所有数字都可以成为地图、指示牌和穿线路径里的线索。",
+    "knowledgePoint": "数字认知基础",
+    "topic": "认识阿拉伯数字"
+  },
+  {
+    "id": "q-map-1",
+    "sectionId": "s2",
+    "sectionTitle": "闯关1：点击重复数字",
+    "type": "mapClick",
+    "sourcePage": "number-sea-explorer/assets/pages/page-05.webp",
+    "stem": "智小圆发现了宝藏地图，先找出出现次数最多的数字。",
+    "prompt": "点击地图下方的数字按钮，选出宝藏上的关键数字。",
+    "options": [
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "answer": "1",
+    "count": 5,
+    "success": "找到了，数字 1 是这张地图的分组线索。",
+    "failure": "再观察地图上黄色方块里的数字，哪一个出现最多？",
+    "explanation": "分组法的第一步，是把重复出现的数字看成同一组线索。",
+    "knowledgePoint": "分组法",
+    "topic": "用分组法找出路径中的关键数字"
+  },
+  {
+    "id": "q-map-2",
+    "sectionId": "s2",
+    "sectionTitle": "闯关2：拖拽数字补地图",
+    "type": "imageOverlayDrag",
+    "sourcePage": "number-sea-explorer/assets/pages/page-07.webp",
+    "stem": "智小圆发现了宝藏地图，路径上有两个空白宝藏格。",
+    "prompt": "把数字直接拖到图中的空格里。",
+    "tokens": [
+      "5",
+      "6",
+      "3"
+    ],
+    "success": "地图补齐了！两个空格分别是 5 和 6。",
+    "failure": "仔细看图中已有的数字，两个空格分别缺哪个数？",
+    "explanation": "路径按分组法规律，两个空格分别是数字 5 和 6。",
+    "overlayTargets": [
+      {
+        "id": "top-path",
+        "answer": "5",
+        "left": 51.7,
+        "top": 50.2
+      },
+      {
+        "id": "finish",
+        "answer": "6",
+        "left": 59.2,
+        "top": 56.8
+      }
+    ],
+    "knowledgePoint": "分组法",
+    "topic": "分组法：补全宝藏地图空白格"
+  },
+  {
+    "id": "q-star-fill",
+    "sectionId": "s2",
+    "sectionTitle": "练一练：星际启航",
+    "type": "imageOverlayDrag",
+    "sourcePage": "number-sea-explorer/assets/pages/page-star-fill.webp",
+    "stem": "星际启航路径上有 2 颗空白星星，观察规律：6、5、4 循环出现。",
+    "prompt": "把正确的数字拖到图中的空白星星上。",
+    "success": "答对了！6、5、4 循环规律完成！",
+    "failure": "仔细看：6、5、4 循环，空白星星是哪两个？",
+    "explanation": "规律是 6→5→4 循环，最后两个空白星依次是 6 和 5。",
+    "tokens": [
+      "4",
+      "5",
+      "6"
+    ],
+    "overlayTargets": [
+      {
+        "id": "star-1",
+        "answer": "6",
+        "left": 61.2,
+        "top": 76.3
+      },
+      {
+        "id": "star-2",
+        "answer": "5",
+        "left": 67.8,
+        "top": 61.1
+      }
+    ],
+    "knowledgePoint": "找规律（周期问题）",
+    "topic": "找出星际路径的循环数字规律"
+  },
+  {
+    "id": "q-treasure-map",
+    "sectionId": "s2",
+    "sectionTitle": "练一练：宝藏地图",
+    "type": "imageOverlayDrag",
+    "sourcePage": "number-sea-explorer/assets/pages/page-treasure-map.webp",
+    "stem": "智小圆发现了宝藏地图，路径上有三个空格！",
+    "prompt": "把数字直接拖到图中的空格里。",
+    "tokens": [
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "overlayTargets": [
+      {
+        "id": "blank-1",
+        "answer": "1",
+        "left": 71.0,
+        "top": 49.8
+      },
+      {
+        "id": "blank-2",
+        "answer": "3",
+        "left": 60.4,
+        "top": 62.9
+      },
+      {
+        "id": "blank-3",
+        "answer": "2",
+        "left": 66.9,
+        "top": 75.8
+      }
+    ],
+    "success": "宝藏地图补全了！每一段路径的数字都按规律填好了。",
+    "failure": "仔细看每段路径：{5,4}→{5,4,3}→{5,4,3,2}→{5,4,?,?,?}，规律是什么？",
+    "explanation": "路径按 {5,4}→{5,4,3}→{5,4,3,2}→{5,4,3,2,1} 递增，三个空格答案是 1、3、2。",
+    "knowledgePoint": "分组法",
+    "topic": "分组法：填写宝藏路径空格"
+  },
+  {
+    "id": "q-sign-1",
+    "sectionId": "s3",
+    "sectionTitle": "指示牌填空",
+    "type": "signInput",
+    "sourcePage": "number-sea-explorer/assets/pages/page-10.webp",
+    "stem": "观察指示牌：1 和 2 组成 132，2 和 3 组成 253，3 和 1 组成 341。",
+    "prompt": "左边是 4，右边是 2，中间应该填什么？",
+    "rows": [
+      [
+        "1",
+        "132",
+        "2"
+      ],
+      [
+        "2",
+        "253",
+        "3"
+      ],
+      [
+        "3",
+        "341",
+        "1"
+      ],
+      [
+        "4",
+        "",
+        "2"
+      ]
+    ],
+    "answer": "462",
+    "success": "推理成功。",
+    "failure": "看中间三位：第一位取左边，中间位是左右相加，最后一位取右边。",
+    "explanation": "4 和 2 的中间数字是 4、6、2，所以答案是 462。",
+    "knowledgePoint": "数位组合规律",
+    "topic": "从指示牌观察数位组合规律"
+  },
+  {
+    "id": "q-sign-2",
+    "sectionId": "s3",
+    "sectionTitle": "练一练：指示牌填空",
+    "type": "signInput",
+    "sourcePage": "number-sea-explorer/assets/pages/page-sign-2.webp",
+    "stem": "观察指示牌：4 和 5 组成 415，3 和 6 组成 336，7 和 2 组成 752。",
+    "prompt": "左边是 9，右边是 1，中间应该填什么？",
+    "rows": [
+      [
+        "4",
+        "415",
+        "5"
+      ],
+      [
+        "3",
+        "336",
+        "6"
+      ],
+      [
+        "7",
+        "752",
+        "2"
+      ],
+      [
+        "9",
+        "",
+        "1"
+      ]
+    ],
+    "answer": "981",
+    "success": "推理成功！",
+    "failure": "仔细看：中间三位数的第一位是左边，最后一位是右边，中间那位是左边减右边。",
+    "explanation": "规律：中间数 = [左][左-右][右]，所以 9 和 1 得到 9、8、1 → 981。",
+    "knowledgePoint": "数位组合规律",
+    "topic": "数位组合规律练习"
+  },
+  {
+    "id": "q-wire-1",
+    "sectionId": "s4",
+    "sectionTitle": "穿线挑战",
+    "type": "wirePath",
+    "sourcePage": "number-sea-explorer/assets/pages/page-12.webp",
+    "stem": "宝藏密码藏在数字线里。",
+    "prompt": "按 1 → 8 的顺序点击数字，完成穿线。",
+    "grid": [
+      [
+        "",
+        "7",
+        "8",
+        "",
+        ""
+      ],
+      [
+        "",
+        "6",
+        "1",
+        "2",
+        ""
+      ],
+      [
+        "",
+        "5",
+        "4",
+        "3",
+        ""
+      ]
+    ],
+    "sequence": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8"
+    ],
+    "success": "穿线完成，密码路径亮起来了。",
+    "failure": "要从 1 开始，按相邻顺序一路连到 8。",
+    "explanation": "穿线法就是从小到大找到连续路径。",
+    "knowledgePoint": "数字顺序",
+    "topic": "按正确顺序连接数字路径"
+  },
+  {
+    "id": "q-wire-2",
+    "sectionId": "s4",
+    "sectionTitle": "练一练：拖拽补线",
+    "type": "gridFill",
+    "sourcePage": "number-sea-explorer/assets/pages/page-13.webp",
+    "stem": "把缺失数字放回格子，让 1 到 15 能沿路径连起来。",
+    "prompt": "拖拽数字到空格，补出连续路径。",
+    "tokens": [
+      "4",
+      "5",
+      "8",
+      "13",
+      "14"
+    ],
+    "grid": [
+      [
+        "1",
+        "2",
+        "3",
+        "",
+        "",
+        ""
+      ],
+      [
+        "6",
+        "",
+        "",
+        "15",
+        "",
+        ""
+      ],
+      [
+        "7",
+        "",
+        "9",
+        "10",
+        "11",
+        "12"
+      ]
+    ],
+    "targets": [
+      {
+        "id": "r2c3",
+        "row": 1,
+        "col": 2,
+        "answer": "4"
+      },
+      {
+        "id": "r2c2",
+        "row": 1,
+        "col": 1,
+        "answer": "5"
+      },
+      {
+        "id": "r3c2",
+        "row": 2,
+        "col": 1,
+        "answer": "8"
+      },
+      {
+        "id": "r2c5",
+        "row": 1,
+        "col": 4,
+        "answer": "14"
+      },
+      {
+        "id": "r2c6",
+        "row": 1,
+        "col": 5,
+        "answer": "13"
+      }
+    ],
+    "success": "连续数字补全了。",
+    "failure": "沿着 1、2、3 往后想，先找到 4 和 5。",
+    "explanation": "穿线题要先确定方向，再把缺失的连续数字放回路径。",
+    "knowledgePoint": "数字顺序·路径填空",
+    "topic": "补全1到15的数字路径"
+  },
+  {
+    "id": "q-final-1",
+    "sectionId": "s5",
+    "sectionTitle": "巩固1：地图找数字",
+    "type": "imageOverlayDrag",
+    "sourcePage": "number-sea-explorer/assets/pages/page-final-1.webp",
+    "stem": "加加发现了宝藏地图，路径上有空格，帮他找出宝藏上的数字吧！",
+    "prompt": "把数字直接拖到图中的空格里。",
+    "answer": "8",
+    "success": "所有空格填对了！分组规律完成！",
+    "failure": "仔细看路径上 7 和 8 的分组规律，找出缺少的数字。",
+    "explanation": "路径按分组法排列，空格按 7、8 的规律填入。",
+    "tokens": [
+      "7",
+      "8",
+      "7",
+      "8",
+      "7",
+      "7"
+    ],
+    "overlayTargets": [
+      {
+        "id": "b1",
+        "answer": "7",
+        "left": 50.6,
+        "top": 59.6
+      },
+      {
+        "id": "b2",
+        "answer": "7",
+        "left": 64.0,
+        "top": 59.4
+      },
+      {
+        "id": "b3",
+        "answer": "8",
+        "left": 57.6,
+        "top": 71.1
+      },
+      {
+        "id": "b4",
+        "answer": "8",
+        "left": 38.8,
+        "top": 77.1
+      },
+      {
+        "id": "b5",
+        "answer": "7",
+        "left": 32.7,
+        "top": 86.3
+      },
+      {
+        "id": "b6",
+        "answer": "7",
+        "left": 42.4,
+        "top": 89.5
+      }
+    ],
+    "knowledgePoint": "分组法（综合应用）",
+    "topic": "用分组法填写地图空格"
+  },
+  {
+    "id": "q-final-2",
+    "sectionId": "s5",
+    "sectionTitle": "巩固2：星际启航",
+    "type": "imageOverlayDrag",
+    "sourcePage": "number-sea-explorer/assets/pages/page-final-2.webp",
+    "stem": "星际启航路径上有 2 颗空白星星，规律是 1、5、10 循环出现。",
+    "prompt": "把正确的数字拖到图中的空白星星上。",
+    "tokens": [
+      "1",
+      "5",
+      "10",
+      "1",
+      "5",
+      "10"
+    ],
+    "overlayTargets": [
+      {
+        "id": "b1",
+        "answer": "10",
+        "left": 49.3,
+        "top": 48.2
+      },
+      {
+        "id": "b2",
+        "answer": "5",
+        "left": 70.6,
+        "top": 63.8
+      },
+      {
+        "id": "b3",
+        "answer": "5",
+        "left": 54.2,
+        "top": 89.8
+      },
+      {
+        "id": "b4",
+        "answer": "10",
+        "left": 63.6,
+        "top": 81.2
+      }
+    ],
+    "success": "太棒了！四个空白星都填对了！",
+    "failure": "仔细观察1、5、10的循环规律，找出空白星的数字。",
+    "explanation": "路径按 1→5→10 循环排列，空格按规律填入。",
+    "knowledgePoint": "找规律（周期问题）",
+    "topic": "找出1、5、10循环规律并填空"
+  },
+  {
+    "id": "q-final-3",
+    "sectionId": "s5",
+    "sectionTitle": "巩固3：地图填空",
+    "type": "imageOverlayDrag",
+    "sourcePage": "number-sea-explorer/assets/pages/page-final-3.webp",
+    "stem": "加加发现了新地图，路径上有空格，用分组法找出规律！",
+    "prompt": "把正确数字拖到图中的空格里。",
+    "tokens": [
+      "5",
+      "6",
+      "7",
+      "8",
+      "9"
+    ],
+    "overlayTargets": [
+      {
+        "id": "blank-1",
+        "answer": "5",
+        "left": 59.3,
+        "top": 51.6
+      },
+      {
+        "id": "blank-2",
+        "answer": "8",
+        "left": 34.3,
+        "top": 87.6
+      }
+    ],
+    "success": "地图填好了！分组规律完成！",
+    "failure": "仔细看路径上的分组规律，找出缺少的数字。",
+    "explanation": "按照路径分组规律，三个空格分别是 9、7、6。",
+    "knowledgePoint": "分组法（综合应用）",
+    "topic": "分组法综合：地图路径填空"
+  },
+  {
+    "id": "q-final-4",
+    "sectionId": "s5",
+    "sectionTitle": "巩固4：指示牌填空",
+    "type": "signInput",
+    "sourcePage": "number-sea-explorer/assets/pages/page-final-4.webp",
+    "stem": "观察指示牌：1 和 7 组成 17，2 和 6 组成 26，3 和 5 组成 35。",
+    "prompt": "左边是 4，右边是 9，中间应该填什么？",
+    "rows": [
+      [
+        "1",
+        "17",
+        "7"
+      ],
+      [
+        "2",
+        "26",
+        "6"
+      ],
+      [
+        "3",
+        "35",
+        "5"
+      ],
+      [
+        "4",
+        "",
+        "9"
+      ]
+    ],
+    "answer": "49",
+    "success": "推理成功！",
+    "failure": "仔细看：中间的数字是把左边和右边直接拼在一起。",
+    "explanation": "规律：中间 = [左][右]，所以 4 和 9 → 49。",
+    "knowledgePoint": "数位组合规律",
+    "topic": "两位数数位组合规律应用"
+  },
+  {
+    "id": "q-final-5",
+    "sectionId": "s5",
+    "sectionTitle": "巩固5：指示牌填空",
+    "type": "signInput",
+    "sourcePage": "number-sea-explorer/assets/pages/page-final-5.webp",
+    "stem": "观察指示牌：6 和 1 组成 615，7 和 2 组成 725，8 和 3 组成 835。",
+    "prompt": "左边是 9，右边是 4，中间应该填什么？",
+    "rows": [
+      [
+        "6",
+        "615",
+        "1"
+      ],
+      [
+        "7",
+        "725",
+        "2"
+      ],
+      [
+        "8",
+        "835",
+        "3"
+      ],
+      [
+        "9",
+        "",
+        "4"
+      ]
+    ],
+    "answer": "945",
+    "success": "推理成功！",
+    "failure": "仔细看：中间三位数 = [左][右][左-右]，6,1 → 6,1,5 → 615。",
+    "explanation": "规律：中间 = [左][右][左-右]，9,4 → 9,4,5 → 945。",
+    "knowledgePoint": "数位组合规律",
+    "topic": "三位数数位组合规律应用"
+  },
+  {
+    "id": "q-final-6",
+    "sectionId": "s5",
+    "sectionTitle": "巩固6：穿线补数",
+    "type": "gridFill",
+    "sourcePage": "number-sea-explorer/assets/pages/page-final-6.webp",
+    "stem": "把缺失数字放回格子，让 1 到 12 沿路径连起来。",
+    "prompt": "拖拽数字到空格，补出连续路径。",
+    "tokens": [
+      "4",
+      "7",
+      "9"
+    ],
+    "grid": [
+      [
+        "1",
+        "2",
+        "3",
+        ""
+      ],
+      [
+        "8",
+        "",
+        "6",
+        "5"
+      ],
+      [
+        "",
+        "10",
+        "11",
+        "12"
+      ]
+    ],
+    "targets": [
+      {
+        "id": "r1c4",
+        "row": 0,
+        "col": 3,
+        "answer": "4"
+      },
+      {
+        "id": "r2c2",
+        "row": 1,
+        "col": 1,
+        "answer": "7"
+      },
+      {
+        "id": "r3c1",
+        "row": 2,
+        "col": 0,
+        "answer": "9"
+      }
+    ],
+    "success": "连续数字补全了！路径 1→12 连通！",
+    "failure": "沿着路径走：1,2,3 后面是4；8,7,6,5 中间缺7；9,10,11,12 中缺9和12。",
+    "explanation": "蛇形路径：1→2→3→4 | 8→7→6→5 | 9→10→11→12。",
+    "knowledgePoint": "数字顺序（综合应用）",
+    "topic": "补全1到12的蛇形路径数字"
+  },
+  {
+    "id": "q-final-7",
+    "sectionId": "s5",
+    "sectionTitle": "巩固7：穿线挑战",
+    "type": "wirePath",
+    "sourcePage": "number-sea-explorer/assets/pages/page-final-7.webp",
+    "stem": "宝藏密码藏在数字网格里，按顺序连线。",
+    "prompt": "按 1 → 8 的顺序点击数字，完成穿线。",
+    "grid": [
+      [
+        "1",
+        "2",
+        "4",
+        "7"
+      ],
+      [
+        "3",
+        "5",
+        "8",
+        ""
+      ],
+      [
+        "6",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        ""
+      ]
+    ],
+    "sequence": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8"
+    ],
+    "success": "穿线完成，密码路径亮起来了！",
+    "failure": "要从 1 开始，按相邻顺序一路连到 8。",
+    "explanation": "穿线法：从小到大找到连续路径，每步走到相邻格子。",
+    "knowledgePoint": "数字顺序（综合应用）",
+    "topic": "按顺序连接1到8的数字挑战"
+  }
+]</script>
   <script>
     const app = document.getElementById('app');
     const progressEl = document.getElementById('progress');
@@ -138,7 +1088,8 @@
     window.addEventListener('beforeunload', () => runtime.save(buildScormPayload()));
 
     async function boot() {
-      const [lesson, questions] = await Promise.all([fetchJson('data/lesson.json'), fetchJson('data/questions.json')]);
+      const lesson    = JSON.parse(document.getElementById('lesson-data').textContent);
+      const questions = JSON.parse(document.getElementById('questions-data').textContent);
       Object.assign(state, { lesson, questions, flow: lesson.flow });
       titleEl.textContent = lesson.title;
       hydrate();
@@ -228,7 +1179,7 @@
     }
     function renderQuestion(q) {
       const showImg = q.sourcePage && q.type === 'mapClick';
-      const imgHtml = showImg ? `<div class="source-frame hero-img"><img src="${q.sourcePage}" alt="${q.sectionTitle}" loading="lazy" decoding="async"></div>` : '';
+      const imgHtml = showImg ? `<div class="source-frame hero-img"><img src="${q.sourcePage}" alt="${q.sectionTitle}"></div>` : '';
       const base = `<div id="interaction"></div>`;
       stageShell(q.sectionTitle, `${imgHtml}<p class="lead" style="margin:8px 0 2px;font-size:16px;color:#345b70;">${q.stem}</p>${q.prompt ? `<p class="lead" style="margin:0 0 10px;font-size:15px;color:#597386;">${q.prompt}</p>` : ''}${base}<div class="feedback" id="feedback"></div><div class="actions"><button class="btn primary hidden" id="next-btn">继续探险</button></div>`, q.sectionId);
       document.getElementById('next-btn').addEventListener('click', next);
@@ -274,7 +1225,7 @@
     }
     function renderDragSlots(host, q) { renderGenericDrag(host, q.tokens, q.targets, (placements) => q.targets.every((t) => placements[t.id] === t.answer), () => finishQuestion(q, { placements:true }), () => { document.getElementById('feedback').textContent = q.failure; markRetry(q.id); }); }
     function renderImageOverlayDrag(host, q) {
-      host.innerHTML = `<div class="overlay-image-wrap" id="oi-wrap"><img src="${q.sourcePage}" alt="${q.sectionTitle}" class="overlay-base-img" loading="lazy" decoding="async">${q.overlayTargets.map((t) => `<div class="overlay-target" data-tgt="${t.id}" data-ans="${t.answer}" style="left:${t.left}%;top:${t.top}%"><span class="oi-badge">?</span></div>`).join('')}</div><div class="tokens" id="oi-tokens">${q.tokens.map((t, i) => `<button class="token" draggable="true" data-token="${t}" data-tid="oi${i}">${t}</button>`).join('')}</div><div class="actions"><button class="btn secondary" id="check-oi">检查答案</button><button class="btn ghost" id="reset-oi">重来</button></div>`;
+      host.innerHTML = `<div class="overlay-image-wrap" id="oi-wrap"><img src="${q.sourcePage}" alt="${q.sectionTitle}" class="overlay-base-img">${q.overlayTargets.map((t) => `<div class="overlay-target" data-tgt="${t.id}" data-ans="${t.answer}" style="left:${t.left}%;top:${t.top}%"><span class="oi-badge">?</span></div>`).join('')}</div><div class="tokens" id="oi-tokens">${q.tokens.map((t, i) => `<button class="token" draggable="true" data-token="${t}" data-tid="oi${i}">${t}</button>`).join('')}</div><div class="actions"><button class="btn secondary" id="check-oi">检查答案</button><button class="btn ghost" id="reset-oi">重来</button></div>`;
       const placements = {}; let selected = null; let pointerDrag = null;
       const tokenEls = [...host.querySelectorAll('.token')];
       const targetEls = [...host.querySelectorAll('.overlay-target')];
@@ -410,7 +1361,7 @@
     }
     function renderMultiChallenge(host, q) {
       let passed = 0;
-      host.innerHTML = `<div class="round-grid">${q.rounds.map((r, i) => `<div class="round-card" data-round="${i}"><h3>${r.title}</h3><div class="source-frame"><img src="${r.sourcePage}" alt="${r.title}" loading="lazy" decoding="async"></div><p>${r.question}</p>${r.type === 'mapClick' ? `<div class="option-grid">${r.options.map((o) => `<button class="option" data-round-answer="${o}">${o}</button>`).join('')}</div>` : `<input class="answer-input" inputmode="numeric" placeholder="答案"><button class="btn secondary">提交</button>`}<p class="lead result"></p></div>`).join('')}</div>`;
+      host.innerHTML = `<div class="round-grid">${q.rounds.map((r, i) => `<div class="round-card" data-round="${i}"><h3>${r.title}</h3><div class="source-frame"><img src="${r.sourcePage}" alt="${r.title}"></div><p>${r.question}</p>${r.type === 'mapClick' ? `<div class="option-grid">${r.options.map((o) => `<button class="option" data-round-answer="${o}">${o}</button>`).join('')}</div>` : `<input class="answer-input" inputmode="numeric" placeholder="答案"><button class="btn secondary">提交</button>`}<p class="lead result"></p></div>`).join('')}</div>`;
       host.querySelectorAll('.round-card').forEach((card) => {
         const round = q.rounds[Number(card.dataset.round)];
         if (round.type === 'mapClick') card.querySelectorAll('[data-round-answer]').forEach((btn) => btn.addEventListener('click', () => checkRound(card, round, btn.dataset.roundAnswer)));
